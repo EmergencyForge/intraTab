@@ -185,6 +185,23 @@ function OpenIntraRPTablet()
     if Config.Debug then
         print("Got character data:", json.encode(charData))
     end
+
+    if Config.AllowedJobs then
+        local found = false
+        for _, v in ipairs(Config.AllowedJobs) do            
+            if v == charData.job then
+                found = true
+                break
+            end
+        end
+
+        if not found then
+            if Config.Debug then
+                print("Player Job not Allowed")
+            end
+            return
+        end
+    end
     
     isTabletOpen = true
     
