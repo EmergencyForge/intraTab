@@ -17,6 +17,10 @@ Config.AllowedJobs = {
     'admin'
 }
 
+
+Config.RequireItem = true
+Config.RequiredItem = "tablet"
+
 -- Key to open tablet
 Config.OpenKey = 'F9'  -- You can change this to any key from the list below
 
@@ -29,6 +33,8 @@ Config.Animation = {
 }
 
 -- Prop settings
+Config.UseProp = true
+
 Config.Prop = {                                        -- if you want to use the NidaPad Prop:                 (get the Prop here: https://intrarp.tebex.io/package/6879175) 
     model = "prop_cs_tablet",                          -- model = "nidapad",
     bone = 60309,                                      -- bone = 18905,

@@ -161,6 +161,34 @@ function StopTabletAnimation()
     end
 end
 
+
+function PlayerHasItem(itemName)
+    if FrameworkName == 'qbcore' then
+        local PlayerData = Framework.Functions.GetPlayerData()
+        if not PlayerData or not PlayerData.items then return false end
+        
+        for _, item in pairs(PlayerData.items) do
+            if item.name == itemName and item.amount > 0 then
+                return true
+            end
+        end
+        return false
+
+    elseif FrameworkName == 'esx' then
+        local inventory = Framework.GetPlayerData().inventory
+        if not inventory then return false end
+        
+        for _, item in pairs(inventory) do
+            if item.name == itemName and item.count > 0 then
+                return true
+            end
+        end
+        return false
+    end
+
+    return false
+end
+
 -- Open tablet
 function OpenIntraRPTablet()
     if isTabletOpen then 
@@ -202,17 +230,27 @@ function OpenIntraRPTablet()
             return
         end
     end
+
+    if Config.RequireItem then
+        if not PlayerHasItem(Config.RequiredItem) then
+            ShowNotification("Du besitzt kein Tablet!", "error")
+            return
+        end
+    end
     
     isTabletOpen = true
     
-    -- Create tablet prop and play animation
-    CreateTabletProp()
-    PlayTabletAnimation()
-    
+    if Config.UseProp then
+        -- Create tablet prop and play animation
+        CreateTabletProp()
+        PlayTabletAnimation()
+    end
+   
     -- Enable NUI with proper focus
     SetNuiFocus(true, true)
     SetNuiFocusKeepInput(false)
-    
+
+
     -- Send character data to NUI
     SendNUIMessage({
         type = "openTablet",
@@ -235,6 +273,7 @@ function CloseIntraRPTablet()
     
     isTabletOpen = false
     
+
     -- Stop animation and delete prop
     StopTabletAnimation()
     DeleteTabletProp()
@@ -300,10 +339,11 @@ CreateThread(function()
                 end
                 CloseIntraRPTablet()
             end
-            
-            -- Keep animation playing
-            if not IsEntityPlayingAnim(ped, tabletDict, tabletAnim, 3) then
-                PlayTabletAnimation()
+            if Config.UseProp then
+                -- Keep animation playing
+                if not IsEntityPlayingAnim(ped, tabletDict, tabletAnim, 3) then
+                    PlayTabletAnimation()
+                end
             end
         else
             -- Check for configured key press when tablet is closed
