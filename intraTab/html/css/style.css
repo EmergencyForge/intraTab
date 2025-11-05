@@ -28,12 +28,12 @@ body {
     height: 90%;
     max-width: 1400px;
     max-height: 900px;
-    background: #e8e8e8;
+    background: #d0d0d0;
     border-radius: 25px;
-    border: 18px solid #d32f2f;
+    border: 20px solid #d32f2f;
     position: relative;
     overflow: visible;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: column;
 }
@@ -41,12 +41,12 @@ body {
 .tablet-frame::before {
     content: '';
     position: absolute;
-    top: 18px;
-    left: 18px;
-    right: 18px;
-    bottom: 18px;
-    border: 3px solid #b71c1c;
-    border-radius: 15px;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%, rgba(0, 0, 0, 0.05) 100%);
+    border-radius: 10px;
     pointer-events: none;
     z-index: 1;
 }
@@ -54,14 +54,13 @@ body {
 .tablet-frame::after {
     content: '';
     position: absolute;
-    top: 21px;
-    left: 21px;
-    right: 21px;
-    bottom: 21px;
-    border: 12px solid #c0c0c0;
-    border-radius: 12px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 25px;
     pointer-events: none;
-    z-index: 2;
+    z-index: 0;
 }
 
 /* Handle Structure */
@@ -114,9 +113,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 15px;
-    background: rgba(0, 0, 0, 0.05);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 10px 15px;
+    background: transparent;
+    border-bottom: none;
     z-index: 100;
     position: relative;
 }
@@ -129,10 +128,10 @@ body {
 .nav-btn {
     width: 35px;
     height: 35px;
-    background: rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    color: #333;
+    color: #555;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -143,28 +142,28 @@ body {
 }
 
 .nav-btn:hover {
-    background: rgba(0, 0, 0, 0.15);
-    border-color: rgba(0, 0, 0, 0.25);
+    background: rgba(255, 255, 255, 0.5);
+    border-color: rgba(0, 0, 0, 0.2);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .nav-btn:active {
     transform: translateY(0);
-    background: rgba(0, 0, 0, 0.12);
+    background: rgba(255, 255, 255, 0.4);
 }
 
 .nav-btn:disabled {
     opacity: 0.4;
     cursor: not-allowed;
-    background: rgba(0, 0, 0, 0.05);
-    border-color: rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(0, 0, 0, 0.05);
 }
 
 .nav-btn:disabled:hover {
     transform: none;
-    background: rgba(0, 0, 0, 0.05);
-    border-color: rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(0, 0, 0, 0.05);
     box-shadow: none;
 }
 
