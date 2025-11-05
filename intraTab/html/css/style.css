@@ -45,7 +45,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), transparent, rgba(0, 0, 0, 0.1));
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.15) 0%, transparent 50%, rgba(0, 0, 0, 0.1) 100%);
     border-radius: 25px;
     pointer-events: none;
     z-index: 1;
@@ -59,10 +59,10 @@ body {
     transform: translateX(-50%);
     width: 10px;
     height: 10px;
-    background: radial-gradient(circle, #1a1a1a 30%, #333 60%, #1a1a1a 100%);
+    background: radial-gradient(circle, #2c2c2c 30%, #555 60%, #2c2c2c 100%);
     border-radius: 50%;
     z-index: 2;
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.15);
 }
 
 /* Navigation Header */
