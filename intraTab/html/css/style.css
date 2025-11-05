@@ -28,12 +28,12 @@ body {
     height: 90%;
     max-width: 1400px;
     max-height: 900px;
-    background: #1a1a1a;
-    border-radius: 20px;
-    border: 3px solid #333;
+    background: #e8e8e8;
+    border-radius: 25px;
+    border: 18px solid #d32f2f;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
 }
@@ -45,8 +45,8 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(145deg, transparent, rgba(255, 255, 255, 0.05));
-    border-radius: 20px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), transparent, rgba(0, 0, 0, 0.1));
+    border-radius: 25px;
     pointer-events: none;
     z-index: 1;
 }
@@ -54,14 +54,15 @@ body {
 .tablet-frame::after {
     content: '';
     position: absolute;
-    top: 5px;
+    top: 8px;
     left: 50%;
     transform: translateX(-50%);
-    width: 60px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle, #1a1a1a 30%, #333 60%, #1a1a1a 100%);
+    border-radius: 50%;
     z-index: 2;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
 }
 
 /* Navigation Header */
@@ -70,8 +71,8 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 12px 15px;
-    background: rgba(0, 0, 0, 0.3);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     z-index: 100;
     position: relative;
 }
@@ -84,10 +85,10 @@ body {
 .nav-btn {
     width: 35px;
     height: 35px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 8px;
-    color: #ecf0f1;
+    color: #333;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -98,28 +99,28 @@ body {
 }
 
 .nav-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.15);
+    border-color: rgba(0, 0, 0, 0.25);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .nav-btn:active {
     transform: translateY(0);
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(0, 0, 0, 0.12);
 }
 
 .nav-btn:disabled {
     opacity: 0.4;
     cursor: not-allowed;
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
 }
 
 .nav-btn:disabled:hover {
     transform: none;
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
     box-shadow: none;
 }
 
@@ -143,11 +144,11 @@ body {
 .tablet-title {
     flex: 1;
     text-align: center;
-    color: #ecf0f1;
+    color: #333;
     font-weight: 600;
     font-size: 16px;
     margin: 0 20px;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    text-shadow: none;
 }
 
 .close-btn {
@@ -183,7 +184,7 @@ body {
     flex: 1;
     width: 100%;
     border: none;
-    border-radius: 0 0 17px 17px;
+    border-radius: 0 0 7px 7px;
     display: none;
     cursor: default;
     background: #fff;
@@ -195,20 +196,20 @@ body {
     left: 0;
     width: 100%;
     bottom: 0;
-    background: #000;
+    background: #1a1a1a;
     color: #fff;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: 0 0 17px 17px;
+    border-radius: 0 0 7px 7px;
     cursor: default;
     z-index: 10;
 }
 
 .loading-spinner {
-    border: 4px solid #333;
-    border-top: 4px solid #007bff;
+    border: 4px solid #444;
+    border-top: 4px solid #d32f2f;
     border-radius: 50%;
     width: 50px;
     height: 50px;
@@ -238,22 +239,22 @@ body {
     right: 60px;
     width: 8px;
     height: 8px;
-    background: #28ca42;
+    background: #4caf50;
     border-radius: 50%;
-    box-shadow: 0 0 10px rgba(40, 202, 66, 0.5);
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.6);
     animation: pulse 2s infinite;
     z-index: 2;
 }
 
 @keyframes pulse {
     0% {
-        box-shadow: 0 0 10px rgba(40, 202, 66, 0.5);
+        box-shadow: 0 0 10px rgba(76, 175, 80, 0.6);
     }
     50% {
-        box-shadow: 0 0 20px rgba(40, 202, 66, 0.8);
+        box-shadow: 0 0 20px rgba(76, 175, 80, 0.9);
     }
     100% {
-        box-shadow: 0 0 10px rgba(40, 202, 66, 0.5);
+        box-shadow: 0 0 10px rgba(76, 175, 80, 0.6);
     }
 }
 
@@ -293,6 +294,7 @@ body {
     .tablet-frame {
         width: 95%;
         height: 90%;
+        border-width: 15px;
     }
     
     .tablet-header {
@@ -327,7 +329,8 @@ body {
     .tablet-frame {
         width: 98%;
         height: 95%;
-        border-radius: 15px;
+        border-radius: 20px;
+        border-width: 12px;
     }
     
     .tablet-header {
@@ -382,7 +385,8 @@ body {
 
 @media (max-width: 480px) {
     .tablet-frame {
-        border-radius: 12px;
+        border-radius: 15px;
+        border-width: 10px;
     }
     
     .tablet-header {
@@ -437,22 +441,22 @@ body {
 /* High contrast mode support */
 @media (prefers-contrast: high) {
     .tablet-frame {
-        border-color: #fff;
+        border-color: #c62828;
     }
     
     .tablet-header {
-        background: rgba(0, 0, 0, 0.8);
-        border-color: #fff;
+        background: rgba(0, 0, 0, 0.15);
+        border-color: rgba(0, 0, 0, 0.3);
     }
     
     .nav-btn {
-        background: rgba(0, 0, 0, 0.8);
-        border-color: #fff;
-        color: #fff;
+        background: rgba(0, 0, 0, 0.15);
+        border-color: rgba(0, 0, 0, 0.3);
+        color: #000;
     }
     
     .nav-btn:hover {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(0, 0, 0, 0.25);
     }
 }
 
