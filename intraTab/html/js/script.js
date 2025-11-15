@@ -118,6 +118,34 @@ function loadIntraSystem(charData) {
   const loadingScreen = document.getElementById("loadingScreen");
 
   if (iframe) {
+    // Add error handler for iframe load failures
+    iframe.addEventListener('error', function(e) {
+      console.error('[intraTab] iframe failed to load:', e);
+      if (loadingText) {
+        loadingText.textContent = "Error: Failed to load IntraRP. Check server configuration.";
+      }
+    }, { once: true });
+
+    // Add load handler to detect successful/blocked loads
+    iframe.addEventListener('load', function() {
+      console.log('[intraTab] iframe load event fired for URL:', url);
+      
+      // Try to detect if iframe is blocked by checking access
+      try {
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        if (iframeDoc) {
+          console.log('[intraTab] iframe content accessible');
+        }
+      } catch (e) {
+        console.warn('[intraTab] Cannot access iframe content - likely blocked by X-Frame-Options or CSP headers');
+        console.warn('[intraTab] Error:', e.message);
+        if (loadingText) {
+          loadingText.textContent = "Warning: Content may be blocked by server security headers. Check Cloudflare/server configuration.";
+        }
+      }
+    }, { once: true });
+
+    console.log('[intraTab] Loading URL in iframe:', url);
     iframe.src = url;
 
     setTimeout(() => {
