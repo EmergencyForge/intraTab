@@ -134,18 +134,41 @@ function loadIntraSystem(charData) {
       try {
         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
         if (iframeDoc) {
-          console.log('[intraTab] iframe content accessible');
+          console.log('[intraTab] iframe content accessible - page loaded successfully');
+          
+          // Check if the iframe actually has content
+          const iframeBody = iframeDoc.body;
+          if (!iframeBody || iframeBody.children.length === 0) {
+            console.warn('[intraTab] iframe loaded but appears empty - possible security block');
+            if (loadingText) {
+              loadingText.textContent = "Warning: Page loaded but appears empty. Check server configuration.";
+            }
+          }
         }
       } catch (e) {
-        console.warn('[intraTab] Cannot access iframe content - likely blocked by X-Frame-Options or CSP headers');
+        console.warn('[intraTab] Cannot access iframe content - likely blocked by security headers');
         console.warn('[intraTab] Error:', e.message);
+        console.warn('[intraTab] Common causes:');
+        console.warn('[intraTab]   - X-Frame-Options header blocking embedding');
+        console.warn('[intraTab]   - Content-Security-Policy frame-ancestors restriction');
+        console.warn('[intraTab]   - Cloudflare Browser Integrity Check');
+        console.warn('[intraTab]   - Cloudflare Bot Fight Mode');
+        console.warn('[intraTab] See CLOUDFLARE_TROUBLESHOOTING.md for solutions');
+        
         if (loadingText) {
-          loadingText.textContent = "Warning: Content may be blocked by server security headers. Check Cloudflare/server configuration.";
+          loadingText.textContent = "Warning: Content blocked by security headers. See troubleshooting guide.";
         }
       }
     }, { once: true });
 
     console.log('[intraTab] Loading URL in iframe:', url);
+    console.log('[intraTab] If content does not load, check:');
+    console.log('[intraTab]   1. Server X-Frame-Options header');
+    console.log('[intraTab]   2. Server Content-Security-Policy header');
+    console.log('[intraTab]   3. Cloudflare Browser Integrity Check (disable)');
+    console.log('[intraTab]   4. Cloudflare Bot Fight Mode (configure)');
+    console.log('[intraTab]   5. Cloudflare Rocket Loader (disable)');
+    
     iframe.src = url;
 
     setTimeout(() => {

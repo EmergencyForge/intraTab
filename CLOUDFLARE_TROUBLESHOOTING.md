@@ -86,6 +86,67 @@ header("Content-Security-Policy: frame-ancestors *");
 3. Create a rule to remove or modify `X-Frame-Options` header
 4. Create a rule to set `Content-Security-Policy` to allow framing
 
+### Solution 6: Cloudflare-Specific Features That May Block iframes
+
+Some Cloudflare features can interfere with iframe functionality:
+
+#### Disable Browser Integrity Check
+1. Go to Cloudflare Dashboard
+2. Navigate to **Security** > **Settings**
+3. Scroll to **Browser Integrity Check**
+4. **Disable** this feature
+
+This check can block FiveM's embedded browser (CEF) from loading iframes properly.
+
+#### Disable or Configure Bot Fight Mode
+1. Go to Cloudflare Dashboard
+2. Navigate to **Security** > **Bots**
+3. Review **Bot Fight Mode** settings
+4. Either disable it or add FiveM's user agent to the allowlist
+
+Bot Fight Mode may incorrectly identify FiveM's requests as bot traffic.
+
+#### Disable Rocket Loader (if enabled)
+1. Go to Cloudflare Dashboard
+2. Navigate to **Speed** > **Optimization**
+3. Find **Rocket Loader**
+4. **Disable** this feature
+
+Rocket Loader can interfere with JavaScript execution in iframes.
+
+#### Configure Firewall Rules
+1. Go to Cloudflare Dashboard
+2. Navigate to **Security** > **WAF**
+3. Check for rules that might block iframe requests
+4. Consider adding a bypass rule for your FiveM server IP
+
+### Solution 7: Cookie Settings (for authenticated content)
+
+If IntraRP requires authentication, cookies must work in iframe context:
+
+**Server-side (PHP example):**
+```php
+// Set SameSite=None for cookies to work in iframes
+setcookie('session_name', $value, [
+    'samesite' => 'None',
+    'secure' => true,  // Required when SameSite=None
+    'httponly' => true
+]);
+```
+
+**Or via headers:**
+```
+Set-Cookie: session_name=value; SameSite=None; Secure; HttpOnly
+```
+
+### Solution 8: Meta Tag CSP (as fallback)
+
+Some configurations require CSP in both headers AND meta tags. Add this to your IntraRP's HTML `<head>`:
+
+```html
+<meta http-equiv="Content-Security-Policy" content="frame-ancestors *">
+```
+
 ## Alternative: Open in External Browser
 
 If you cannot modify server configuration, you can open IntraRP in an external browser instead of embedding it in the tablet. This would require modifying the intraTab resource to open links externally.
