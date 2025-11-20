@@ -8,6 +8,20 @@ function RequestRuntimeConfig()
     TriggerServerEvent('intrarp-tablet:getConfig')
 end
 
+-- Framework-specific notification function (reuse from main.lua if available)
+local function ShowNotification(message, type)
+    if FrameworkName == 'qbcore' and Framework then
+        Framework.Functions.Notify(message, type or "primary")
+    elseif FrameworkName == 'esx' and Framework then
+        Framework.ShowNotification(message)
+    else
+        -- Fallback notification
+        SetNotificationTextEntry("STRING")
+        AddTextComponentString(message)
+        DrawNotification(false, false)
+    end
+end
+
 -- Receive config from server
 RegisterNetEvent('intrarp-tablet:receiveConfig')
 AddEventHandler('intrarp-tablet:receiveConfig', function(config)

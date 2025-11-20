@@ -41,13 +41,17 @@ local function LoadConfigFromFile()
         local content = file:read('*all')
         file:close()
         
-        local success, decoded = pcall(json.decode, content)
-        if success and decoded then
-            RuntimeConfig = decoded
-            print('^2[intraTab Config]^7 Loaded runtime configuration from file')
-            return true
+        if content and content ~= '' then
+            local success, decoded = pcall(json.decode, content)
+            if success and decoded and type(decoded) == 'table' then
+                RuntimeConfig = decoded
+                print('^2[intraTab Config]^7 Loaded runtime configuration from file')
+                return true
+            else
+                print('^3[intraTab Config]^7 Failed to decode config file, using defaults')
+            end
         else
-            print('^3[intraTab Config]^7 Failed to decode config file, using defaults')
+            print('^3[intraTab Config]^7 Config file is empty, using defaults')
         end
     end
     return false
@@ -115,6 +119,36 @@ AddEventHandler('intrarp-tablet:getConfig', function()
     end
 end)
 
+-- Validate configuration value
+local function ValidateConfigValue(key, value, subkey)
+    local valueType = type(value)
+    
+    -- Validate based on key
+    if key == 'Debug' or key == 'RequireItem' or key == 'UseProp' then
+        return valueType == 'boolean'
+    elseif key == 'IntraURL' or key == 'RequiredItem' or key == 'OpenKey' or key == 'Framework' then
+        return valueType == 'string' and value ~= ''
+    elseif key == 'AllowedJobs' then
+        return valueType == 'table'
+    elseif key == 'EMDSync' and subkey then
+        if subkey == 'Enabled' then
+            return valueType == 'boolean'
+        elseif subkey == 'PHPEndpoint' or subkey == 'APIKey' then
+            return valueType == 'string'
+        elseif subkey == 'SyncInterval' then
+            return valueType == 'number' and value > 0
+        end
+    elseif key == 'Prop' and subkey then
+        if subkey == 'model' then
+            return valueType == 'string' and value ~= ''
+        elseif subkey == 'bone' then
+            return valueType == 'number'
+        end
+    end
+    
+    return true -- Allow other values by default
+end
+
 -- Server event to update config
 RegisterServerEvent('intrarp-tablet:updateConfig')
 AddEventHandler('intrarp-tablet:updateConfig', function(configData)
@@ -127,8 +161,12 @@ AddEventHandler('intrarp-tablet:updateConfig', function(configData)
     
     -- Validate and update configuration
     if configData.key and configData.value ~= nil then
-        UpdateConfigValue(configData.key, configData.value, configData.subkey)
-        TriggerClientEvent('intrarp-tablet:notify', src, 'Configuration updated successfully', 'success')
+        if ValidateConfigValue(configData.key, configData.value, configData.subkey) then
+            UpdateConfigValue(configData.key, configData.value, configData.subkey)
+            TriggerClientEvent('intrarp-tablet:notify', src, 'Configuration updated successfully', 'success')
+        else
+            TriggerClientEvent('intrarp-tablet:notify', src, 'Invalid configuration value', 'error')
+        end
     end
 end)
 

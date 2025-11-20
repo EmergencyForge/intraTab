@@ -1,5 +1,16 @@
 let currentConfig = null;
 
+// FiveM NUI helper function
+function GetParentResourceName() {
+  if (window.GetParentResourceName) {
+    return window.GetParentResourceName();
+  }
+  // Fallback for testing
+  const url = new URL(window.location.href);
+  const match = url.pathname.match(/\/([^/]+)\/html\//);
+  return match ? match[1] : 'intraTab';
+}
+
 window.addEventListener('message', function(event) {
     const data = event.data;
     
