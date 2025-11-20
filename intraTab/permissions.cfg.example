@@ -1,0 +1,12 @@
+# Example ACE permissions for IntraTab Configuration Menu
+# Add this to your server.cfg or a separate permissions file
+
+# Grant admin group access to configuration
+add_ace group.admin intrarp.config allow
+
+# Or grant specific players access to configuration
+# add_ace identifier.fivem:12345 intrarp.config allow
+# add_ace identifier.steam:110000123456789 intrarp.config allow
+
+# Grant reload command access
+add_ace group.admin command.intrarp-reloadconfig allow
