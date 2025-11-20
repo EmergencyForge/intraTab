@@ -3,12 +3,35 @@
 local isConfigMenuOpen = false
 local currentRuntimeConfig = nil
 
+-- Local framework detection for this module
+local Framework = nil
+local FrameworkName = nil
+
+-- Detect framework
+Citizen.CreateThread(function()
+    if Config.Framework == 'auto' then
+        if GetResourceState('qb-core') == 'started' then
+            Framework = exports['qb-core']:GetCoreObject()
+            FrameworkName = 'qbcore'
+        elseif GetResourceState('es_extended') == 'started' then
+            Framework = exports['es_extended']:getSharedObject()
+            FrameworkName = 'esx'
+        end
+    elseif Config.Framework == 'qbcore' then
+        Framework = exports['qb-core']:GetCoreObject()
+        FrameworkName = 'qbcore'
+    elseif Config.Framework == 'esx' then
+        Framework = exports['es_extended']:getSharedObject()
+        FrameworkName = 'esx'
+    end
+end)
+
 -- Request current config from server
 function RequestRuntimeConfig()
     TriggerServerEvent('intrarp-tablet:getConfig')
 end
 
--- Framework-specific notification function (reuse from main.lua if available)
+-- Framework-specific notification function
 local function ShowNotification(message, type)
     if FrameworkName == 'qbcore' and Framework then
         Framework.Functions.Notify(message, type or "primary")
