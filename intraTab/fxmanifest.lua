@@ -12,18 +12,23 @@ shared_scripts {
 }
 
 client_scripts {
-    'client/main.lua'
+    'client/main.lua',
+    'client/config_ui.lua'
 }
 
 server_scripts {
     'server/main.lua',
-    'server/emd_sync.lua'
+    'server/emd_sync.lua',
+    'server/config_manager.lua'
 }
 
 ui_page 'html/index.html'
 
 files {
     'html/index.html',
+    'html/config.html',
     'html/css/style.css',
-    'html/js/script.js'
+    'html/css/config.css',
+    'html/js/script.js',
+    'html/js/config.js'
 }

@@ -1,0 +1,10 @@
+# Runtime configuration file
+intraTab/runtime_config.json
+
+# IDE files
+.vscode/
+.idea/
+
+# Backup files
+*.bak
+*~
