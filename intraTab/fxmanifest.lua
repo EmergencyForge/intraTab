@@ -3,8 +3,8 @@ lua54 'on'
 game 'gta5'
 
 name 'intraTab'
-description 'IntraRP FiveM Tablet Integration'
-author 'intraRP & NoName.cs <kontakt@intrarp.de>'
+description 'intraTab + NOTFpad'
+author 'EmergencyForge.de'
 version '1.2.0'
 
 shared_scripts {
@@ -25,5 +25,8 @@ ui_page 'html/index.html'
 files {
     'html/index.html',
     'html/css/style.css',
-    'html/js/script.js'
+    'html/js/script.js',
+    'stream/notfpad.ytyp'
 }
+
+data_file 'DLC_ITYP_REQUEST' 'stream/notfpad.ytyp'

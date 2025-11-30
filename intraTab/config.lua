@@ -41,16 +41,16 @@ Config.Animation = {
 -- Prop settings
 Config.UseProp = true
 
-Config.Prop = {                                        -- Wenn du den NIDA-Prop benutzen willst:       (Prop herunterladen: https://intrarp.tebex.io/package/6879175) 
-    model = "prop_cs_tablet",                          -- model = "nidapad",
-    bone = 60309,                                      -- bone = 18905,
+Config.Prop = {
+    model = "notfpad",
+    bone = 18905,
     offset = {
-        x = 0.03,                                      -- x = 0.1240,
-        y = 0.002,                                     -- y = 0.0550,
-        z = -0.0,                                      -- z = 0.1550,
-        xRot = 10.0,                                   -- xRot = -76.0,
-        yRot = 160.0,                                  -- yRot = -186.0,
-        zRot = 0.0                                     -- zRot = 58.3
+        x = 0.1240,
+        y = 0.0550,
+        z = 0.1550,
+        xRot = -76.0,
+        yRot = -186.0,
+        zRot = 58.3
     }
 }
 
