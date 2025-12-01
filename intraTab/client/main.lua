@@ -1,6 +1,7 @@
 -- Framework detection
 local Framework = nil
 local FrameworkName = nil
+local frameworkDetected = false
 
 -- Auto-detect framework
 Citizen.CreateThread(function()
@@ -19,6 +20,8 @@ Citizen.CreateThread(function()
         Framework = exports['es_extended']:getSharedObject()
         FrameworkName = 'esx'
     end
+    
+    frameworkDetected = true
     
     if Config.Debug then
         print("^2[intraTab]^7 Client framework detected: " .. (FrameworkName or "None"))
@@ -219,6 +222,22 @@ function OpenIntraRPTablet()
         print("Opening Tablet...")
     end
     
+    -- Wait for framework detection if not yet complete
+    if not frameworkDetected then
+        if Config.Debug then
+            print("Waiting for framework detection...")
+        end
+        local waitCount = 0
+        while not frameworkDetected and waitCount < 50 do
+            Wait(100)
+            waitCount = waitCount + 1
+        end
+        if not frameworkDetected then
+            ShowNotification("Framework detection timeout", "error")
+            return
+        end
+    end
+    
     -- Get character data
     local charData = GetPlayerCharacterData()
     
@@ -267,6 +286,9 @@ function OpenIntraRPTablet()
     SetNuiFocus(true, true)
     SetNuiFocusKeepInput(false)
 
+    if Config.Debug then
+        print("NUI focus enabled, sending openTablet message")
+    end
 
     -- Send character data to NUI
     SendNUIMessage({
@@ -276,7 +298,7 @@ function OpenIntraRPTablet()
     })
 
     if Config.Debug then
-    --ShowNotification("intraRP geöffnet: " .. charData.firstName .. " " .. charData.lastName, "success")
+        print("openTablet message sent to NUI")
     end
 end
 

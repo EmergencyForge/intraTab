@@ -4,10 +4,10 @@ let IntraURL = null;
 let navigationHistory = [];
 let historyIndex = -1;
 let currentUrl = "";
+let domReady = false;
+let pendingMessages = [];
 
-window.addEventListener("message", function (event) {
-  const data = event.data;
-
+function processMessage(data) {
   switch (data.type) {
     case "openTablet":
       openTablet(data.characterData, data.IntraURL);
@@ -21,6 +21,28 @@ window.addEventListener("message", function (event) {
       closeTablet();
       break;
   }
+}
+
+function processPendingMessages() {
+  while (pendingMessages.length > 0) {
+    const data = pendingMessages.shift();
+    console.log("Processing pending message:", data.type);
+    processMessage(data);
+  }
+}
+
+window.addEventListener("message", function (event) {
+  const data = event.data;
+  
+  if (!data || !data.type) return;
+
+  if (!domReady) {
+    console.log("DOM not ready, queuing message:", data.type);
+    pendingMessages.push(data);
+    return;
+  }
+
+  processMessage(data);
 });
 
 function openTablet(charData, url) {
@@ -29,7 +51,8 @@ function openTablet(charData, url) {
   characterData = charData;
   isTabletOpen = true;
 
-  if (url) {
+  // Set IntraURL if provided and not empty
+  if (url && url.trim() !== "") {
     IntraURL = url;
   }
 
@@ -335,8 +358,15 @@ function addEventListeners() {
   });
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", addEventListeners);
-} else {
+function onDOMReady() {
+  domReady = true;
   addEventListeners();
+  console.log("DOM ready, processing any pending messages");
+  processPendingMessages();
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", onDOMReady);
+} else {
+  onDOMReady();
 }
