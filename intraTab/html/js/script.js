@@ -4,10 +4,12 @@ let IntraURL = null;
 let navigationHistory = [];
 let historyIndex = -1;
 let currentUrl = "";
-let domReady = false;
-let pendingMessages = [];
 
-function processMessage(data) {
+window.addEventListener("message", function (event) {
+  const data = event.data;
+
+  if (!data || !data.type) return;
+
   switch (data.type) {
     case "openTablet":
       openTablet(data.characterData, data.IntraURL);
@@ -21,28 +23,6 @@ function processMessage(data) {
       closeTablet();
       break;
   }
-}
-
-function processPendingMessages() {
-  while (pendingMessages.length > 0) {
-    const data = pendingMessages.shift();
-    console.log("Processing pending message:", data.type);
-    processMessage(data);
-  }
-}
-
-window.addEventListener("message", function (event) {
-  const data = event.data;
-  
-  if (!data || !data.type) return;
-
-  if (!domReady) {
-    console.log("DOM not ready, queuing message:", data.type);
-    pendingMessages.push(data);
-    return;
-  }
-
-  processMessage(data);
 });
 
 function openTablet(charData, url) {
@@ -358,15 +338,8 @@ function addEventListeners() {
   });
 }
 
-function onDOMReady() {
-  domReady = true;
-  addEventListeners();
-  console.log("DOM ready, processing any pending messages");
-  processPendingMessages();
-}
-
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", onDOMReady);
+  document.addEventListener("DOMContentLoaded", addEventListeners);
 } else {
-  onDOMReady();
+  addEventListeners();
 }
