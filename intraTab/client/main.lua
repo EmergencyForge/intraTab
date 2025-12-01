@@ -23,23 +23,6 @@ Citizen.CreateThread(function()
     if Config.Debug then
         print("^2[intraTab]^7 Client framework detected: " .. (FrameworkName or "None"))
     end
-    
-    -- Register framework-specific events after detection
-    if FrameworkName == 'qbcore' then
-        RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
-            characterData = nil
-            if Config.Debug then
-                print("QBCore player loaded, character data reset")
-            end
-        end)
-    elseif FrameworkName == 'esx' then
-        RegisterNetEvent('esx:playerLoaded', function(xPlayer)
-            characterData = nil
-            if Config.Debug then
-                print("ESX player loaded, character data reset")
-            end
-        end)
-    end
 end)
 
 local isTabletOpen = false
@@ -336,11 +319,12 @@ RegisterNUICallback('closeTablet', function(data, cb)
     cb('ok')
 end)
 
--- ESC key handler and animation maintenance thread
--- Note: F9 key binding is handled by RegisterKeyMapping below, not by this thread
+-- Key detection thread
 CreateThread(function()
+    local keyControl = GetKeyControl()
+    
     if Config.Debug then
-        print("Monitoring ESC key for tablet close")
+        print("Monitoring key:", Config.OpenKey, "with control ID:", keyControl)
     end
     
     while true do
@@ -360,6 +344,14 @@ CreateThread(function()
                 if not IsEntityPlayingAnim(ped, tabletDict, tabletAnim, 3) then
                     PlayTabletAnimation()
                 end
+            end
+        else
+            -- Check for configured key press when tablet is closed
+            if IsControlJustPressed(0, keyControl) then
+                if Config.Debug then
+                    print(Config.OpenKey .. " pressed (Control ID: " .. keyControl .. "), opening tablet")
+                end
+                OpenIntraRPTablet()
             end
         end
         Wait(0)
@@ -395,6 +387,23 @@ end, false)
 
 -- Key mapping
 RegisterKeyMapping('intrarp', 'Open IntraRP Tablet', 'keyboard', Config.OpenKey)
+
+-- Framework-specific events
+if FrameworkName == 'qbcore' then
+    RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
+        characterData = nil
+        if Config.Debug then
+            print("QBCore player loaded, character data reset")
+        end
+    end)
+elseif FrameworkName == 'esx' then
+    RegisterNetEvent('esx:playerLoaded', function(xPlayer)
+        characterData = nil
+        if Config.Debug then
+            print("ESX player loaded, character data reset")
+        end
+    end)
+end
 
 -- Resource start
 AddEventHandler('onResourceStart', function(resourceName)
