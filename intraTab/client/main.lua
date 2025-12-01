@@ -3,6 +3,9 @@ local Framework = nil
 local FrameworkName = nil
 local frameworkDetected = false
 
+-- Maximum wait attempts for framework detection (50 * 100ms = 5 seconds)
+local MAX_FRAMEWORK_WAIT_ATTEMPTS = 50
+
 -- Auto-detect framework
 Citizen.CreateThread(function()
     if Config.Framework == 'auto' then
@@ -228,7 +231,7 @@ function OpenIntraRPTablet()
             print("Waiting for framework detection...")
         end
         local waitCount = 0
-        while not frameworkDetected and waitCount < 50 do
+        while not frameworkDetected and waitCount < MAX_FRAMEWORK_WAIT_ATTEMPTS do
             Wait(100)
             waitCount = waitCount + 1
         end

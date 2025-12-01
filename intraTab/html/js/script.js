@@ -52,7 +52,7 @@ function openTablet(charData, url) {
   isTabletOpen = true;
 
   // Set IntraURL if provided and not empty
-  if (url && url.trim() !== "") {
+  if (url && url.trim()) {
     IntraURL = url;
   }
 
