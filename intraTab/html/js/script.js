@@ -24,6 +24,8 @@ window.addEventListener("message", function (event) {
 });
 
 function openTablet(charData, url) {
+  console.log("Opening tablet with data:", charData, "URL:", url);
+  
   characterData = charData;
   isTabletOpen = true;
 
@@ -35,14 +37,27 @@ function openTablet(charData, url) {
   const loadingScreen = document.getElementById("loadingScreen");
   const tabletScreen = document.getElementById("tabletScreen");
 
-  if (tabletContainer) {
-    tabletContainer.style.display = "flex";
-    document.body.style.cursor = "default";
-    tabletContainer.style.cursor = "default";
+  if (!tabletContainer) {
+    console.error("Tablet container element not found!");
+    return;
   }
 
-  if (tabletScreen && tabletScreen.src && tabletScreen.src !== "") {
-    console.log("Restoring tablet with existing content");
+  // Always show the tablet container
+  tabletContainer.style.display = "flex";
+  document.body.style.cursor = "default";
+  tabletContainer.style.cursor = "default";
+  console.log("Tablet container displayed");
+
+  // Check if we can restore existing content (src must be a valid URL, not empty or about:blank)
+  const existingSrc = tabletScreen ? tabletScreen.src : "";
+  const nuiPageUrl = window.location.href;
+  const hasValidContent = existingSrc && 
+                          existingSrc !== "" && 
+                          existingSrc !== "about:blank" && 
+                          existingSrc !== nuiPageUrl;
+  
+  if (tabletScreen && hasValidContent) {
+    console.log("Restoring tablet with existing content:", existingSrc);
     if (loadingScreen) loadingScreen.style.display = "none";
     tabletScreen.style.display = "block";
     updateNavigationButtons();
@@ -98,6 +113,16 @@ function setCharacterData(charData) {
 
 function loadIntraSystem(charData) {
   const loadingText = document.getElementById("loadingText");
+  
+  // Check if IntraURL is configured
+  if (!IntraURL || IntraURL.trim() === "") {
+    console.error("IntraURL is not configured!");
+    if (loadingText) {
+      loadingText.textContent = "Error: Tablet URL not configured. Please check Config.IntraURL.";
+    }
+    return;
+  }
+  
   if (loadingText) {
     loadingText.textContent =
       "Loading system for " +
@@ -109,6 +134,8 @@ function loadIntraSystem(charData) {
 
   const characterName = charData.firstName + " " + charData.lastName;
   const url = IntraURL + "?charactername=" + encodeURIComponent(characterName);
+  
+  console.log("Loading IntraSystem with URL:", url);
 
   addToHistory(url);
   currentUrl = url;
