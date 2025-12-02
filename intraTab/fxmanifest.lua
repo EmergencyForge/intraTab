@@ -28,4 +28,4 @@ files {
     'html/js/script.js'
 }
 
-data_file 'DLC_ITYP_REQUEST' 'stream/nidapad.ytyp'
+data_file 'DLC_ITYP_REQUEST' 'stream/notfpad.ytyp'
