@@ -92,14 +92,49 @@ function CreateTabletProp()
     local ped = PlayerPedId()
     local coords = GetEntityCoords(ped)
     
-    -- Load prop model
-    RequestModel(Config.Prop.model)
-    while not HasModelLoaded(Config.Prop.model) do
+    -- Get model hash for custom streamed prop
+    local modelHash = GetHashKey(Config.Prop.model)
+    
+    if Config.Debug then
+        print("^2[intraTab]^7 Attempting to load prop model: " .. Config.Prop.model .. " (hash: " .. modelHash .. ")")
+    end
+    
+    -- Check if model is valid before requesting
+    if not IsModelValid(modelHash) then
+        if Config.Debug then
+            print("^1[intraTab]^7 Model is not valid: " .. Config.Prop.model .. " - Check if the model exists and is properly configured")
+        end
+        return false
+    end
+    
+    -- Load prop model using hash
+    RequestModel(modelHash)
+    
+    -- Wait for model to load with timeout (5 seconds = 5000ms / 100ms per iteration = 50 iterations)
+    local timeout = 50
+    while not HasModelLoaded(modelHash) and timeout > 0 do
         Wait(100)
+        timeout = timeout - 1
+    end
+    
+    -- Check if model loaded successfully
+    if not HasModelLoaded(modelHash) then
+        if Config.Debug then
+            print("^1[intraTab]^7 Failed to load prop model (timeout): " .. Config.Prop.model)
+        end
+        return false
     end
     
     -- Create the prop
-    tabletProp = CreateObject(GetHashKey(Config.Prop.model), coords.x, coords.y, coords.z, true, true, true)
+    tabletProp = CreateObject(modelHash, coords.x, coords.y, coords.z, true, true, true)
+    
+    -- Check if prop was created successfully using DoesEntityExist for reliable entity validation
+    if not DoesEntityExist(tabletProp) then
+        if Config.Debug then
+            print("^1[intraTab]^7 Failed to create prop object: " .. Config.Prop.model)
+        end
+        return false
+    end
     
     -- Attach to player
     AttachEntityToEntity(
@@ -116,8 +151,10 @@ function CreateTabletProp()
     )
     
     if Config.Debug then
-        print("Tablet prop created and attached")
+        print("^2[intraTab]^7 Tablet prop created and attached successfully")
     end
+    
+    return true
 end
 
 -- Function to delete tablet prop
