@@ -23,6 +23,18 @@ Citizen.CreateThread(function()
     if Config.Debug then
         print("^2[intraTab]^7 Client framework detected: " .. (FrameworkName or "None"))
     end
+    
+    -- Log the loaded IntraURL from config
+    print("^2[intraTab]^7 Loaded IntraURL from config: ^3" .. (Config.IntraURL or "EMPTY") .. "^7")
+    if Config.IntraURL and Config.IntraURL ~= "" then
+        if Config.IntraURL:lower():sub(1, 7) == "http://" then
+            print("^1[intraTab ERROR]^7 Config.IntraURL still contains HTTP! This should not happen!")
+        elseif Config.IntraURL:lower():sub(1, 8) == "https://" then
+            print("^2[intraTab]^7 Config.IntraURL is correctly using HTTPS")
+        else
+            print("^3[intraTab WARNING]^7 Config.IntraURL has no protocol, will be converted to HTTPS")
+        end
+    end
 end)
 
 local isTabletOpen = false
@@ -30,6 +42,32 @@ local characterData = nil
 local tabletProp = nil
 local tabletDict = Config.Animation.dict
 local tabletAnim = Config.Animation.anim
+
+-- Funktion zum Sicherstellen, dass die URL HTTPS verwendet (FiveM-Anforderung)
+local function EnsureHttps(url)
+    if not url or url == "" then
+        return url
+    end
+    
+    -- Entferne führende/trailing Leerzeichen
+    url = url:match("^%s*(.-)%s*$")
+    
+    -- Wenn die URL mit http:// beginnt, ersetze es durch https://
+    if url:lower():sub(1, 7) == "http://" then
+        url = "https://" .. url:sub(8)
+        if Config.Debug then
+            print("^3[intraTab]^7 URL converted to HTTPS: " .. url)
+        end
+    -- Wenn die URL nicht mit einem Protokoll beginnt, füge https:// hinzu
+    elseif url:lower():sub(1, 8) ~= "https://" and url:sub(1, 2) ~= "//" then
+        url = "https://" .. url
+        if Config.Debug then
+            print("^3[intraTab]^7 HTTPS prefix added to URL: " .. url)
+        end
+    end
+    
+    return url
+end
 
 -- Get the control ID for the configured key
 local function GetKeyControl()
@@ -250,12 +288,14 @@ function OpenIntraRPTablet()
     SetNuiFocus(true, true)
     SetNuiFocusKeepInput(false)
 
+    -- Validate and ensure HTTPS for IntraURL
+    local secureURL = EnsureHttps(Config.IntraURL)
 
     -- Send character data to NUI
     SendNUIMessage({
         type = "openTablet",
         characterData = charData,
-        IntraURL = Config.IntraURL
+        IntraURL = secureURL
     })
 
     if Config.Debug then

@@ -4,7 +4,9 @@ Config = {}
 Config.Framework = 'auto' -- 'auto', 'qbcore', oder 'esx'
 
 -- IntraRP Link
-Config.IntraURL = '' -- URL mit Direkt-Link zum eNOTF-Protokoll einfügen (z.B. https://deine-url.de/enotf/)
+-- WICHTIG: FiveM benötigt HTTPS! Die URL wird automatisch auf HTTPS gesetzt.
+-- Beispiel: https://deine-url.de/enotf/
+Config.IntraURL = '' -- URL mit Direkt-Link zum eNOTF-Protokoll einfügen
 
 -- Debug mode
 Config.Debug = false
@@ -26,6 +28,7 @@ Config.OpenKey = 'F9'  -- Sie können dies in eine beliebige Taste aus der folge
 -- EmergencyDispatch Sync Einstellungen
 Config.EMDSync = {
     Enabled = false,  -- Auf true setzen, um die EMD-Synchronisierung zu aktivieren.
+    -- WICHTIG: FiveM benötigt HTTPS! Die URL wird automatisch auf HTTPS gesetzt.
     PHPEndpoint = '',  -- URL mit Direkt-Link zum EMD-Sync einfügen (z.B. https://deine-url.de/api/emd-sync.php)
     APIKey = 'CHANGE_ME',  -- Setze hier den API-Key deines intraRP (du findest diesen unter /assets/config/config.php)
     SyncInterval = 30000,  -- Synchronisations-Intervall (Standard: 30000 = 30 Sekunden)

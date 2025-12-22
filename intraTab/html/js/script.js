@@ -5,6 +5,56 @@ let navigationHistory = [];
 let historyIndex = -1;
 let currentUrl = "";
 
+// Funktion zum Sicherstellen, dass die URL HTTPS verwendet (FiveM-Anforderung)
+function ensureHttps(url) {
+  if (!url) {
+    console.warn("[intraTab] ensureHttps: URL is null or undefined");
+    return url;
+  }
+
+  const originalUrl = url;
+
+  // Entferne führende/trailing Leerzeichen
+  url = url.trim();
+
+  // Wenn die URL mit http:// beginnt, ersetze es durch https://
+  if (url.toLowerCase().startsWith("http://")) {
+    url = url.replace(/^http:\/\//i, "https://");
+    console.warn(
+      "[intraTab] ⚠️  URL converted from HTTP to HTTPS:",
+      originalUrl,
+      "→",
+      url
+    );
+  }
+  // Wenn die URL nicht mit einem Protokoll beginnt, füge https:// hinzu
+  else if (
+    !url.toLowerCase().startsWith("https://") &&
+    !url.toLowerCase().startsWith("//")
+  ) {
+    url = "https://" + url;
+    console.log("[intraTab] Added HTTPS prefix:", originalUrl, "→", url);
+  } else {
+    console.log("[intraTab] ✓ URL already secure:", url);
+  }
+
+  // Füge trailing slash hinzu, falls URL auf einen Pfad endet (verhindert HTTP-Redirects)
+  if (
+    url.indexOf("?") === -1 &&
+    url.indexOf("#") === -1 &&
+    !url.endsWith("/")
+  ) {
+    // Prüfe ob es wie ein Verzeichnis aussieht (kein Dateityp am Ende)
+    const lastSegment = url.split("/").pop();
+    if (lastSegment && !lastSegment.includes(".")) {
+      url = url + "/";
+      console.log("[intraTab] Added trailing slash:", url);
+    }
+  }
+
+  return url;
+}
+
 window.addEventListener("message", function (event) {
   const data = event.data;
 
@@ -27,8 +77,11 @@ function openTablet(charData, url) {
   characterData = charData;
   isTabletOpen = true;
 
+  console.log("[intraTab] openTablet called with URL:", url);
+
   if (url) {
-    IntraURL = url;
+    IntraURL = ensureHttps(url);
+    console.log("[intraTab] IntraURL set to:", IntraURL);
   }
 
   const tabletContainer = document.getElementById("tabletContainer");
@@ -42,7 +95,23 @@ function openTablet(charData, url) {
   }
 
   if (tabletScreen && tabletScreen.src && tabletScreen.src !== "") {
-    console.log("Restoring tablet with existing content");
+    console.log(
+      "[intraTab] Restoring tablet with existing content, checking URL:",
+      tabletScreen.src
+    );
+
+    // Validate existing iframe src is HTTPS
+    if (tabletScreen.src.toLowerCase().startsWith("http://")) {
+      const secureUrl = tabletScreen.src.replace(/^http:\/\//i, "https://");
+      console.warn(
+        "[intraTab] ⚠️  Iframe had insecure URL, fixing:",
+        tabletScreen.src,
+        "→",
+        secureUrl
+      );
+      tabletScreen.src = secureUrl;
+    }
+
     if (loadingScreen) loadingScreen.style.display = "none";
     tabletScreen.style.display = "block";
     updateNavigationButtons();
@@ -107,8 +176,8 @@ function loadIntraSystem(charData) {
       "...";
   }
 
-  const characterName = charData.firstName + " " + charData.lastName;
-  const url = IntraURL + "?charactername=" + encodeURIComponent(characterName);
+  const url = ensureHttps(IntraURL);
+  console.log("[intraTab] loadIntraSystem: Final URL to load:", url);
 
   addToHistory(url);
   currentUrl = url;
@@ -118,7 +187,29 @@ function loadIntraSystem(charData) {
   const loadingScreen = document.getElementById("loadingScreen");
 
   if (iframe) {
+    console.log("[intraTab] Setting iframe.src to:", url);
     iframe.src = url;
+
+    // Überwache iframe src Änderungen (falls Website auf HTTP redirected)
+    const checkIframeSrc = () => {
+      try {
+        const currentSrc = iframe.src;
+        if (currentSrc && currentSrc.toLowerCase().startsWith("http://")) {
+          console.error(
+            "[intraTab] 🚨 CRITICAL: Iframe redirected to HTTP, forcing HTTPS:",
+            currentSrc
+          );
+          const secureSrc = currentSrc.replace(/^http:\/\//i, "https://");
+          iframe.src = secureSrc;
+        }
+      } catch (e) {
+        // Cross-origin Fehler ignorieren
+      }
+    };
+
+    // Prüfe nach kurzer Verzögerung
+    setTimeout(checkIframeSrc, 500);
+    setTimeout(checkIframeSrc, 1500);
 
     setTimeout(() => {
       if (loadingScreen) loadingScreen.style.display = "none";
