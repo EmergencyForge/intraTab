@@ -130,7 +130,8 @@ function openTablet(charData, url) {
     loadIntraSystem(charData);
   } else {
     const loadingText = document.getElementById("loadingText");
-    if (loadingText) loadingText.textContent = "Waiting for character data...";
+    if (loadingText)
+      loadingText.textContent = "Verbindung zum Server wird hergestellt...";
 
     fetch(`https://${GetParentResourceName()}/getCharacterData`, {
       method: "POST",
@@ -146,12 +147,13 @@ function openTablet(charData, url) {
         } else {
           if (loadingText)
             loadingText.textContent =
-              "Error: " + (data.error || "No character data");
+              "Error: " + (data.error || "Konnte keine Daten abfragen");
         }
       })
       .catch((error) => {
         console.error("Error getting character data:", error);
-        if (loadingText) loadingText.textContent = "Error connecting to server";
+        if (loadingText)
+          loadingText.textContent = "Fehler bei der Verbindung zum Server";
       });
   }
 }
@@ -169,11 +171,7 @@ function loadIntraSystem(charData) {
   const loadingText = document.getElementById("loadingText");
   if (loadingText) {
     loadingText.textContent =
-      "Loading system for " +
-      charData.firstName +
-      " " +
-      charData.lastName +
-      "...";
+      "Lade System für " + charData.firstName + " " + charData.lastName + "...";
   }
 
   const url = ensureHttps(IntraURL);
