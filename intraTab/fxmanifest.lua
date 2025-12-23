@@ -12,12 +12,14 @@ shared_scripts {
 }
 
 client_scripts {
-    'client/main.lua'
+    'client/main.lua',
+    'client/asu_client.lua'
 }
 
 server_scripts {
     'server/main.lua',
-    'server/emd_sync.lua'
+    'server/emd_sync.lua',
+    'server/asu_server.lua'
 }
 
 ui_page 'html/index.html'
@@ -25,7 +27,10 @@ ui_page 'html/index.html'
 files {
     'html/index.html',
     'html/css/style.css',
-    'html/js/script.js'
+    'html/js/script.js',
+    'html/asueberwachung.html',
+    'html/css/asueberwachung.css',
+    'html/js/asueberwachung.js'
 }
 
 data_file 'DLC_ITYP_REQUEST' 'stream/notfpad.ytyp'

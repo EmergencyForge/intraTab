@@ -71,6 +71,22 @@ Config.Prop = {
     }
 }
 
+-- Atemschutzüberwachung (ASU) Settings
+Config.ASUJobs = {
+    'police',
+    'ambulance',
+    'firedepartment',
+    'admin'
+}
+
+-- ASU Sync Einstellungen (für API-Übertragung der Protokolle)
+Config.ASUSync = {
+    Enabled = false,  -- Auf true setzen, um die ASU-Synchronisierung zu aktivieren
+    -- WICHTIG: FiveM benötigt HTTPS! Die URL wird automatisch auf HTTPS gesetzt.
+    APIEndpoint = '',  -- URL mit Direkt-Link zum ASU-Sync API-Endpunkt (z.B. https://deine-url.de/api/asu-sync.php)
+    APIKey = 'CHANGE_ME'  -- Setze hier den API-Key deines intraRP
+}
+
 
 --[[ DO NOT TOUCH ANYTHING BELOW THIS LINE OR YOU WILL BREAK THE SCRIPT // KEINE ÄNDERUNGEN UNTERHALB DIESER ZEILE VORNEHMEN, DA SONST DAS SKRIPT BESCHÄDIGT WIRD ]]--
 
