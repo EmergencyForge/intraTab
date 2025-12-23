@@ -74,8 +74,8 @@ Config.ASUJobs = {
 -- ASU Sync Einstellungen (für API-Übertragung der Protokolle)
 Config.ASUSync = {
     Enabled = false,  -- Auf true setzen, um die ASU-Synchronisierung zu aktivieren
-    APIEndpoint = '',  -- URL zum ASU-Sync API-Endpunkt (z.B. https://deine-url.de/api/asu-sync.php)
-    APIKey = 'CHANGE_ME'  -- API-Key deines intraRP
+    APIEndpoint = ''  -- URL zum ASU-Sync API-Endpunkt (z.B. https://deine-url.de/api/asu-sync.php)
+    -- Hinweis: Der API-Key wird von Config.EMDSync.APIKey übernommen
 }
 ```
 
@@ -276,7 +276,8 @@ Das ASU-System ist vollständig unabhängig vom bestehenden Tablet-System:
 ### Daten werden nicht gesendet
 
 - Stellen Sie sicher, dass `Config.ASUSync.Enabled = true` ist
-- Überprüfen Sie den API-Endpunkt und API-Key
+- Überprüfen Sie den API-Endpunkt in `Config.ASUSync.APIEndpoint`
+- Überprüfen Sie den API-Key in `Config.EMDSync.APIKey`
 - Prüfen Sie, ob alle Pflichtfelder ausgefüllt sind
 - Prüfen Sie Server-Logs auf Fehler
 

@@ -44,10 +44,16 @@ If you want to store protocols in a database:
 
 2. Update your FiveM config.lua:
    ```lua
+   -- Set the API key in EMDSync (used by both EMD and ASU)
+   Config.EMDSync = {
+       APIKey = 'your_secure_api_key_here'
+   }
+   
+   -- Enable ASU sync
    Config.ASUSync = {
        Enabled = true,
-       APIEndpoint = 'https://your-domain.com/api/asu-sync.php',
-       APIKey = 'your_secure_api_key_here'
+       APIEndpoint = 'https://your-domain.com/api/asu-sync.php'
+       -- API key is automatically taken from Config.EMDSync.APIKey
    }
    ```
 

@@ -245,8 +245,8 @@ Config.ASUJobs = {
 -- API synchronization
 Config.ASUSync = {
     Enabled = false,
-    APIEndpoint = '',
-    APIKey = 'CHANGE_ME'
+    APIEndpoint = ''
+    -- API key is taken from Config.EMDSync.APIKey
 }
 ```
 

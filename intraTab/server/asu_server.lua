@@ -62,7 +62,7 @@ local function SendASUDataToAPI(data)
     end
     
     local payload = {
-        intraRP_API_Key = Config.ASUSync.APIKey,
+        intraRP_API_Key = Config.EMDSync.APIKey,
         timestamp = os.time(),
         type = 'asu_protocol',
         data = data

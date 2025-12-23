@@ -21,8 +21,13 @@ Config.ASUJobs = {
 -- API-Synchronisierung (optional)
 Config.ASUSync = {
     Enabled = true,  -- auf true setzen zum Aktivieren
-    APIEndpoint = 'https://deine-domain.de/api/asu-sync.php',
-    APIKey = 'DEIN_API_KEY_HIER'
+    APIEndpoint = 'https://deine-domain.de/api/asu-sync.php'
+    -- Hinweis: API-Key wird von Config.EMDSync.APIKey übernommen
+}
+
+-- Stelle sicher, dass der API-Key in Config.EMDSync gesetzt ist:
+Config.EMDSync = {
+    APIKey = 'DEIN_API_KEY_HIER'  -- Dieser Key wird für ASU und EMD verwendet
 }
 ```
 
@@ -72,7 +77,8 @@ Siehe `api_example/` Ordner für:
 
 ### Daten werden nicht gesendet
 - Config.ASUSync.Enabled = true setzen
-- API-Endpunkt und API-Key prüfen
+- API-Endpunkt prüfen
+- API-Key in Config.EMDSync.APIKey prüfen
 - Pflichtfelder ausfüllen
 
 ## Weitere Informationen

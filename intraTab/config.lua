@@ -83,8 +83,8 @@ Config.ASUJobs = {
 Config.ASUSync = {
     Enabled = false,  -- Auf true setzen, um die ASU-Synchronisierung zu aktivieren
     -- WICHTIG: FiveM benötigt HTTPS! Die URL wird automatisch auf HTTPS gesetzt.
-    APIEndpoint = '',  -- URL mit Direkt-Link zum ASU-Sync API-Endpunkt (z.B. https://deine-url.de/api/asu-sync.php)
-    APIKey = 'CHANGE_ME'  -- Setze hier den API-Key deines intraRP
+    APIEndpoint = ''  -- URL mit Direkt-Link zum ASU-Sync API-Endpunkt (z.B. https://deine-url.de/api/asu-sync.php)
+    -- Hinweis: Der API-Key wird von Config.EMDSync.APIKey übernommen
 }
 
 
