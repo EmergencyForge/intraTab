@@ -14,9 +14,12 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCurrentTime();
     setInterval(updateCurrentTime, 1000);
     
-    // Set today's date as default
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('missionDate').value = today;
+    // Set today's date as default in DD.MM.YYYY format
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const year = today.getFullYear();
+    document.getElementById('missionDate').value = `${day}.${month}.${year}`;
 });
 
 // Listen for messages from FiveM
@@ -204,7 +207,7 @@ function clearAll() {
     }
     
     // Clear all inputs
-    const inputs = document.querySelectorAll('input[type="text"], input[type="number"], input[type="time"], textarea');
+    const inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
     inputs.forEach(input => {
         if (input.id !== 'missionDate') {
             input.value = '';
