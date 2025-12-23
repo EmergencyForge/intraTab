@@ -48,6 +48,20 @@ function updateCurrentTime() {
     }
 }
 
+// Show notification message (non-blocking alternative to alert)
+function showNotification(message, type = 'info') {
+    // Send notification to FiveM for native notification display
+    fetch(`https://${GetParentResourceName()}/asuNotification`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: message, type: type })
+    }).catch(error => {
+        console.log('Notification:', message);
+    });
+}
+
 // Format seconds to MM:SS
 function formatTime(seconds) {
     const mins = Math.floor(seconds / 60);
@@ -223,7 +237,7 @@ function sendData() {
     
     // Validate required fields
     if (!data.missionNumber || !data.missionLocation || !data.missionDate || !data.supervisor) {
-        alert('Bitte füllen Sie alle Pflichtfelder aus:\n- Einsatznummer\n- Einsatzort\n- Einsatzdatum\n- Überwacher');
+        showNotification('Bitte füllen Sie alle Pflichtfelder aus: Einsatznummer, Einsatzort, Einsatzdatum, Überwacher', 'error');
         return;
     }
     
@@ -238,7 +252,7 @@ function sendData() {
     }
     
     if (!hasTruppData) {
-        alert('Bitte geben Sie mindestens für einen Trupp die Pflichtfelder (TF und TM1) an!');
+        showNotification('Bitte geben Sie mindestens für einen Trupp die Pflichtfelder (TF und TM1) an!', 'error');
         return;
     }
     
@@ -255,14 +269,14 @@ function sendData() {
     .then(response => response.json())
     .then(result => {
         if (result.success) {
-            alert('Daten erfolgreich gesendet!');
+            showNotification('Daten erfolgreich gesendet!', 'success');
         } else {
-            alert('Fehler beim Senden der Daten: ' + (result.error || 'Unbekannter Fehler'));
+            showNotification('Fehler beim Senden der Daten: ' + (result.error || 'Unbekannter Fehler'), 'error');
         }
     })
     .catch(error => {
         console.error('Error sending ASU data:', error);
-        alert('Fehler beim Senden der Daten!');
+        showNotification('Fehler beim Senden der Daten!', 'error');
     });
 }
 

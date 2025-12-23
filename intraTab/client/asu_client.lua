@@ -190,6 +190,15 @@ RegisterNUICallback('sendASUData', function(data, cb)
     cb({ success = true })
 end)
 
+RegisterNUICallback('asuNotification', function(data, cb)
+    if Config.Debug then
+        print("^2[ASU]^7 NUI notification: " .. (data.message or ""))
+    end
+    
+    ShowNotification(data.message, data.type or "primary")
+    cb('ok')
+end)
+
 -- Receive response from server
 RegisterNetEvent('asu:sendDataResponse')
 AddEventHandler('asu:sendDataResponse', function(response)
