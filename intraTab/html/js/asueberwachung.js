@@ -205,11 +205,9 @@ function clearAll() {
     }
     
     // Clear all inputs
-    const inputs = document.querySelectorAll('input[type="text"], input[type="number"], input[type="time"], textarea, select');
+    const inputs = document.querySelectorAll('input[type="text"], input[type="number"], input[type="time"], textarea');
     inputs.forEach(input => {
-        if (input.type === 'select-one') {
-            input.selectedIndex = 0;
-        } else if (input.id !== 'missionDate') {
+        if (input.id !== 'missionDate') {
             input.value = '';
         }
     });
@@ -279,6 +277,11 @@ function openASU(characterData) {
     if (container) {
         container.style.display = 'flex';
         document.body.style.cursor = 'default';
+    }
+    
+    // Restore timer displays when reopening
+    for (let i = 1; i <= 3; i++) {
+        updateTruppDisplay(i);
     }
     
     console.log('ASU opened', characterData);
