@@ -72,6 +72,8 @@ Config.Prop = {
 }
 
 -- Atemschutzüberwachung (ASU) Settings
+Config.ASUEnabled = true  -- Auf false setzen, um das gesamte ASU-System zu deaktivieren
+
 Config.ASUJobs = {
     'police',
     'ambulance',

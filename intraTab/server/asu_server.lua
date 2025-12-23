@@ -95,6 +95,18 @@ RegisterNetEvent('asu:sendData')
 AddEventHandler('asu:sendData', function(data)
     local src = source
     
+    -- Check if ASU system is enabled
+    if not Config.ASUEnabled then
+        if Config.Debug then
+            print("^3[ASU]^7 ASU system is disabled, rejecting data from player " .. src)
+        end
+        TriggerClientEvent('asu:sendDataResponse', src, {
+            success = false,
+            message = "Das Atemschutzüberwachungssystem ist deaktiviert"
+        })
+        return
+    end
+    
     if Config.Debug then
         print("^2[ASU]^7 Daten von Spieler " .. src .. " empfangen")
         print("^2[ASU]^7 Einsatznummer: " .. (data.missionNumber or "N/A"))
@@ -127,6 +139,11 @@ end)
 
 -- Command to view stored protocols (admin only)
 RegisterCommand('asuprotokolle', function(source, args)
+    if not Config.ASUEnabled then
+        print("^3[ASU]^7 ASU system is disabled")
+        return
+    end
+    
     if source == 0 or IsPlayerAceAllowed(source, 'command.asuprotokolle') then
         print("^2[ASU]^7 Gespeicherte Protokolle:")
         local count = 0
@@ -150,6 +167,10 @@ exports('getASUProtocols', function()
 end)
 
 if Config.Debug then
-    print("^2[ASU]^7 Atemschutzüberwachung Server-System geladen")
-    print("^2[ASU]^7 Framework: " .. (FrameworkName or "None"))
+    if Config.ASUEnabled then
+        print("^2[ASU]^7 Atemschutzüberwachung Server-System geladen")
+        print("^2[ASU]^7 Framework: " .. (FrameworkName or "None"))
+    else
+        print("^3[ASU]^7 Atemschutzüberwachung Server-System ist deaktiviert")
+    end
 end

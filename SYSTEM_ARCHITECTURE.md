@@ -234,6 +234,9 @@ Display notification to user
 ### Config.lua Structure
 
 ```lua
+-- System toggle
+Config.ASUEnabled = true  -- Set to false to completely disable ASU system
+
 -- Job permissions
 Config.ASUJobs = {
     'police',
@@ -249,6 +252,12 @@ Config.ASUSync = {
     -- API key is taken from Config.EMDSync.APIKey
 }
 ```
+
+### System Toggle
+
+The entire ASU system can be enabled or disabled via `Config.ASUEnabled`:
+- When `false`, all ASU commands are disabled, no data is processed, and the system is completely inactive
+- When `true`, the system operates normally (default)
 
 ## Independence from Existing System
 

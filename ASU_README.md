@@ -64,6 +64,8 @@ Die Konfiguration erfolgt in der `config.lua`:
 
 ```lua
 -- Atemschutzüberwachung (ASU) Settings
+Config.ASUEnabled = true  -- Auf false setzen, um das gesamte ASU-System zu deaktivieren
+
 Config.ASUJobs = {
     'police',
     'ambulance',
@@ -78,6 +80,12 @@ Config.ASUSync = {
     -- Hinweis: Der API-Key wird von Config.EMDSync.APIKey übernommen
 }
 ```
+
+### System aktivieren/deaktivieren
+
+Das gesamte ASU-System kann über `Config.ASUEnabled` aktiviert oder deaktiviert werden:
+- `Config.ASUEnabled = true` - System ist aktiv (Standard)
+- `Config.ASUEnabled = false` - System ist komplett deaktiviert (Commands funktionieren nicht, keine Datenverarbeitung)
 
 ### Berechtigungen
 

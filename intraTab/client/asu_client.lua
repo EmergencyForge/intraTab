@@ -95,6 +95,15 @@ end
 
 -- Open ASU interface
 function OpenASU()
+    -- Check if ASU system is enabled
+    if not Config.ASUEnabled then
+        if Config.Debug then
+            print("^3[ASU]^7 ASU system is disabled in config")
+        end
+        ShowNotification("Das Atemschutzüberwachungssystem ist deaktiviert", "error")
+        return
+    end
+    
     if isASUOpen then
         if Config.Debug then
             print("^3[ASU]^7 ASU already open")
@@ -255,5 +264,9 @@ AddEventHandler('onResourceStop', function(resourceName)
 end)
 
 if Config.Debug then
-    print("^2[ASU]^7 Atemschutzüberwachung Client-System geladen")
+    if Config.ASUEnabled then
+        print("^2[ASU]^7 Atemschutzüberwachung Client-System geladen")
+    else
+        print("^3[ASU]^7 Atemschutzüberwachung Client-System ist deaktiviert")
+    end
 end

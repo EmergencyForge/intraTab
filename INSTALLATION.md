@@ -10,6 +10,9 @@
 Öffne `config.lua` und passe an:
 
 ```lua
+-- ASU System aktivieren/deaktivieren
+Config.ASUEnabled = true  -- auf false setzen, um ASU komplett zu deaktivieren
+
 -- Jobs die ASU nutzen dürfen
 Config.ASUJobs = {
     'police',
@@ -72,6 +75,7 @@ Siehe `api_example/` Ordner für:
 ## Problembehebung
 
 ### ASU öffnet sich nicht
+- Prüfe ob Config.ASUEnabled = true gesetzt ist
 - Job-Berechtigung prüfen (Config.ASUJobs)
 - F8 Console auf Fehler prüfen
 

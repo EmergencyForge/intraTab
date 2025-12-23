@@ -44,6 +44,9 @@ If you want to store protocols in a database:
 
 2. Update your FiveM config.lua:
    ```lua
+   -- Enable the ASU system
+   Config.ASUEnabled = true  -- Set to false to disable the entire ASU system
+   
    -- Set the API key in EMDSync (used by both EMD and ASU)
    Config.EMDSync = {
        APIKey = 'your_secure_api_key_here'
