@@ -1,47 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IntraRP Tablet</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Atemschutzüberwachung</title>
+    <link rel="stylesheet" href="css/asueberwachung.css">
 </head>
 
 <body>
-    <div class="tablet-container" id="tabletContainer">
-        <div class="tablet-frame">
-            <div class="holder-left"></div>
-            <div class="holder-span"></div>
-            <div class="holder-right"></div>
-            <!-- Navigation Header -->
-            <div class="tablet-header">
-                <div class="tablet-nav">
-                    <button class="nav-btn home-btn" id="homeBtn" onclick="goHome()" title="Home">
-                        <span class="icon">🏠</span>
-                    </button>
-                </div>
-
-                <div class="tablet-title" id="pageTitle">IntraRP Verwaltungsportal</div>
-
-                <button class="close-btn" onclick="closeTablet()" title="Tablet schließen (ESC)">×</button>
-            </div>
-
-            <!-- Loading Screen -->
-            <div class="loading-screen" id="loadingScreen">
-                <div class="loading-spinner"></div>
-                <h3>Lade eNOTF...</h3>
-                <p id="loadingText">Verbindung zum Server wird hergestellt...</p>
-            </div>
-
-            <!-- Main Content -->
-            <iframe class="tablet-screen" id="tabletScreen"></iframe>
-        </div>
-    </div>
-
-    <script src="js/script.js"></script>
-
-    <!-- ASU Container (separate from tablet) -->
     <div class="asu-container" id="asuContainer">
         <div class="asu-frame">
             <!-- Header -->
@@ -53,8 +20,6 @@
 
             <!-- Main Content -->
             <div class="asu-content">
-                <!-- Trupps Container for Horizontal Layout -->
-                <div class="trupps-container">
                 <!-- Trupp 1 -->
                 <div class="trupp-section">
                     <div class="trupp-header">
@@ -68,21 +33,6 @@
                         <!-- Eieruhr -->
                         <div class="eieruhr-container">
                             <div class="eieruhr">
-                                <div class="analog-clock" id="trupp1Clock">
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-hand" id="trupp1Hand"></div>
-                                </div>
                                 <div class="eieruhr-time" id="trupp1Time">00:00</div>
                                 <div class="eieruhr-label">Einsatzzeit</div>
                                 <div class="eieruhr-progress">
@@ -115,14 +65,18 @@
                             </div>
                             <div class="form-group">
                                 <label>Einsatzbeginn</label>
-                                <input type="text" id="trupp1StartTime" placeholder="HH:MM" pattern="[0-2][0-9]:[0-5][0-9]" maxlength="5">
+                                <input type="time" id="trupp1StartTime">
                             </div>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group full-width">
+                            <div class="form-group">
                                 <label>Auftrag</label>
-                                <input type="text" id="trupp1Mission" placeholder="z.B. Menschenrettung, Brandbekämpfung">
+                                <select id="trupp1Mission">
+                                    <option value="">Bitte wählen</option>
+                                    <option value="Menschenrettung">Menschenrettung</option>
+                                    <option value="Brandbekämpfung">Brandbekämpfung</option>
+                                    <option value="Erkundung">Erkundung</option>
+                                    <option value="Technische Hilfe">Technische Hilfe</option>
+                                    <option value="Sonstiges">Sonstiges</option>
+                                </select>
                             </div>
                         </div>
 
@@ -146,11 +100,11 @@
                             </div>
                             <div class="form-group">
                                 <label>Rückzug</label>
-                                <input type="text" id="trupp1Retreat" placeholder="HH:MM" pattern="[0-2][0-9]:[0-5][0-9]" maxlength="5">
+                                <input type="time" id="trupp1Retreat">
                             </div>
                             <div class="form-group">
                                 <label>Einsatzende</label>
-                                <input type="text" id="trupp1End" placeholder="HH:MM" pattern="[0-2][0-9]:[0-5][0-9]" maxlength="5">
+                                <input type="time" id="trupp1End">
                             </div>
                         </div>
 
@@ -177,21 +131,6 @@
                         <!-- Eieruhr -->
                         <div class="eieruhr-container">
                             <div class="eieruhr">
-                                <div class="analog-clock" id="trupp2Clock">
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-hand" id="trupp2Hand"></div>
-                                </div>
                                 <div class="eieruhr-time" id="trupp2Time">00:00</div>
                                 <div class="eieruhr-label">Einsatzzeit</div>
                                 <div class="eieruhr-progress">
@@ -224,14 +163,18 @@
                             </div>
                             <div class="form-group">
                                 <label>Einsatzbeginn</label>
-                                <input type="text" id="trupp2StartTime" placeholder="HH:MM" pattern="[0-2][0-9]:[0-5][0-9]" maxlength="5">
+                                <input type="time" id="trupp2StartTime">
                             </div>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group full-width">
+                            <div class="form-group">
                                 <label>Auftrag</label>
-                                <input type="text" id="trupp2Mission" placeholder="z.B. Menschenrettung, Brandbekämpfung">
+                                <select id="trupp2Mission">
+                                    <option value="">Bitte wählen</option>
+                                    <option value="Menschenrettung">Menschenrettung</option>
+                                    <option value="Brandbekämpfung">Brandbekämpfung</option>
+                                    <option value="Erkundung">Erkundung</option>
+                                    <option value="Technische Hilfe">Technische Hilfe</option>
+                                    <option value="Sonstiges">Sonstiges</option>
+                                </select>
                             </div>
                         </div>
 
@@ -255,11 +198,11 @@
                             </div>
                             <div class="form-group">
                                 <label>Rückzug</label>
-                                <input type="text" id="trupp2Retreat" placeholder="HH:MM" pattern="[0-2][0-9]:[0-5][0-9]" maxlength="5">
+                                <input type="time" id="trupp2Retreat">
                             </div>
                             <div class="form-group">
                                 <label>Einsatzende</label>
-                                <input type="text" id="trupp2End" placeholder="HH:MM" pattern="[0-2][0-9]:[0-5][0-9]" maxlength="5">
+                                <input type="time" id="trupp2End">
                             </div>
                         </div>
 
@@ -286,21 +229,6 @@
                         <!-- Eieruhr -->
                         <div class="eieruhr-container">
                             <div class="eieruhr">
-                                <div class="analog-clock" id="trupp3Clock">
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-marker"></div>
-                                    <div class="clock-hand" id="trupp3Hand"></div>
-                                </div>
                                 <div class="eieruhr-time" id="trupp3Time">00:00</div>
                                 <div class="eieruhr-label">Einsatzzeit</div>
                                 <div class="eieruhr-progress">
@@ -333,14 +261,18 @@
                             </div>
                             <div class="form-group">
                                 <label>Einsatzbeginn</label>
-                                <input type="text" id="trupp3StartTime" placeholder="HH:MM" pattern="[0-2][0-9]:[0-5][0-9]" maxlength="5">
+                                <input type="time" id="trupp3StartTime">
                             </div>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group full-width">
+                            <div class="form-group">
                                 <label>Auftrag</label>
-                                <input type="text" id="trupp3Mission" placeholder="z.B. Menschenrettung, Brandbekämpfung">
+                                <select id="trupp3Mission">
+                                    <option value="">Bitte wählen</option>
+                                    <option value="Menschenrettung">Menschenrettung</option>
+                                    <option value="Brandbekämpfung">Brandbekämpfung</option>
+                                    <option value="Erkundung">Erkundung</option>
+                                    <option value="Technische Hilfe">Technische Hilfe</option>
+                                    <option value="Sonstiges">Sonstiges</option>
+                                </select>
                             </div>
                         </div>
 
@@ -364,11 +296,11 @@
                             </div>
                             <div class="form-group">
                                 <label>Rückzug</label>
-                                <input type="text" id="trupp3Retreat" placeholder="HH:MM" pattern="[0-2][0-9]:[0-5][0-9]" maxlength="5">
+                                <input type="time" id="trupp3Retreat">
                             </div>
                             <div class="form-group">
                                 <label>Einsatzende</label>
-                                <input type="text" id="trupp3End" placeholder="HH:MM" pattern="[0-2][0-9]:[0-5][0-9]" maxlength="5">
+                                <input type="time" id="trupp3End">
                             </div>
                         </div>
 
@@ -381,8 +313,6 @@
                         </div>
                     </div>
                 </div>
-                </div>
-                <!-- End of Trupps Container -->
 
                 <!-- Mission Info -->
                 <div class="mission-info">
@@ -398,7 +328,7 @@
                         </div>
                         <div class="form-group">
                             <label>Einsatzdatum *</label>
-                            <input type="text" id="missionDate" placeholder="DD.MM.YYYY" pattern="[0-3][0-9]\.[0-1][0-9]\.[0-9]{4}" maxlength="10" required>
+                            <input type="date" id="missionDate" required>
                         </div>
                         <div class="form-group">
                             <label>Überwacher *</label>
@@ -416,7 +346,6 @@
         </div>
     </div>
 
-    <link rel="stylesheet" href="css/asueberwachung.css">
     <script src="js/asueberwachung.js"></script>
 </body>
 
