@@ -412,6 +412,16 @@ function addEventListeners() {
       document.body.style.cursor = "default";
     }
   });
+
+  // Allow closing eNOTF via ESC in NUI, consistent with FireTab
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      const tabletContainer = document.getElementById("tabletContainer");
+      if (tabletContainer && tabletContainer.style.display === "flex") {
+        closeTablet();
+      }
+    }
+  });
 }
 
 if (document.readyState === "loading") {

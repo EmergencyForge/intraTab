@@ -79,8 +79,10 @@ function closeTablet() {
 function closeASU() {
   console.log("[Master] closeASU() called");
   hideAllTablets();
-  // Notify server
-  fetch("https://cfx-nui-intraTab/closeASU", {
+  // Reset cursor explicitly
+  document.body.style.cursor = "none";
+  // Notify server using dynamic resource name
+  fetch(`https://${GetParentResourceName()}/closeASU`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({}),
@@ -111,14 +113,7 @@ window.addEventListener("message", function (event) {
 
     const normalized = (tabletType + "").toLowerCase();
 
-    if (normalized === "asu") {
-      // ASU tablet
-      showTablet("asu");
-      if (window.openASU && typeof window.openASU === "function") {
-        console.log("[Master] Calling openASU");
-        window.openASU(charData, url);
-      }
-    } else if (normalized === "firetab") {
+    if (normalized === "firetab") {
       // FireTab - use firetab.js function
       showTablet("firetab");
       if (
@@ -137,6 +132,15 @@ window.addEventListener("message", function (event) {
         console.log("[Master] Calling openTablet for enotf");
         window.openTablet(charData, url);
       }
+    }
+  }
+
+  // Handle explicit ASU open message
+  else if (data.type === "openASU") {
+    showTablet("asu");
+    if (window.openASU && typeof window.openASU === "function") {
+      console.log("[Master] Calling openASU (explicit)");
+      window.openASU(data.characterData, data.syncEnabled);
     }
   }
 

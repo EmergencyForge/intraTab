@@ -347,7 +347,8 @@ function closeASU() {
   const container = document.getElementById("asuContainer");
   if (container) {
     container.style.display = "none";
-    document.body.style.cursor = "default";
+    // Reset cursor explicitly to hide NUI mouse
+    document.body.style.cursor = "none";
   }
 
   // Notify FiveM
