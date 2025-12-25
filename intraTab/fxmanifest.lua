@@ -12,17 +12,15 @@ shared_scripts {
 }
 
 client_scripts {
-    'client/main.lua',
-    'client/asu_client.lua'
+    'client/main.lua'
 }
 
 server_scripts {
     'server/main.lua',
-    'server/emd_sync.lua',
-    'server/asu_server.lua'
+    'server/emd_sync.lua'
 }
 
--- Master UI Page (contains eNOTF, FireTab, and ASU)
+-- Master UI Page (contains eNOTF and FireTab)
 ui_page 'html/master.html'
 
 files {
@@ -30,9 +28,6 @@ files {
     'html/index.html',
     'html/css/style.css',
     'html/js/script.js',
-    'html/asueberwachung.html',
-    'html/css/asueberwachung.css',
-    'html/js/asueberwachung.js',
     'html/firetab.html',
     'html/css/firetab.css',
     'html/js/firetab.js',

@@ -369,29 +369,17 @@ function OpenTablet(tabletType)
         url = BuildURL('enotf/overview.php')
     elseif tabletType == 'FireTab' then
         url = BuildURL('einsatz/list.php')
-    elseif tabletType == 'ASU' then
-        -- ASU uses local UI; no external URL needed
-        url = nil
     else
         url = BuildURL('')
     end
 
     -- Send character data to NUI
-    if tabletType == 'ASU' then
-        -- ASU uses local UI; notify NUI with explicit message and sync flag
-        SendNUIMessage({
-            type = "openASU",
-            characterData = charData,
-            syncEnabled = (Config.ASUSync and Config.ASUSync.Enabled) or false
-        })
-    else
-        SendNUIMessage({
-            type = "openTablet",
-            tabletType = tabletType,
-            characterData = charData,
-            url = url
-        })
-    end
+    SendNUIMessage({
+        type = "openTablet",
+        tabletType = tabletType,
+        characterData = charData,
+        url = url
+    })
 
     if Config.Debug then
         print("Tablet opened with URL:", url)
@@ -474,15 +462,6 @@ RegisterNUICallback('closeTablet', function(data, cb)
     cb('ok')
 end)
 
--- ASU-specific close callback
-RegisterNUICallback('closeASU', function(data, cb)
-    if Config.Debug then
-        print("NUI requested to close ASU, data:", json.encode(data or {}))
-    end
-    CloseTablet()
-    cb('ok')
-end)
-
 -- Key detection thread
 CreateThread(function()
     while true do
@@ -553,18 +532,6 @@ RegisterCommand(Config.FireTab.Command, function()
     OpenTablet('FireTab')
 end, false)
 
--- ASU Command (optional)
-RegisterCommand('asu', function()
-    if Config.ASU and Config.ASU.Enabled then
-        if Config.Debug then
-            print("/asu command executed")
-        end
-        OpenTablet('ASU')
-    else
-        ShowNotification("ASU-System ist deaktiviert", "error")
-    end
-end, false)
-
 RegisterCommand('intrarptest', function()
     local charData = GetPlayerCharacterData()
     if charData then
@@ -581,9 +548,6 @@ end, false)
 RegisterKeyMapping(Config.eNOTF.Command, 'Open eNOTF Tablet', 'keyboard', Config.eNOTF.OpenKey or 'F9')
 if Config.FireTab.OpenKey then
     RegisterKeyMapping(Config.FireTab.Command, 'Open FireTab', 'keyboard', Config.FireTab.OpenKey)
-end
-if Config.ASU and Config.ASU.OpenKey then
-    RegisterKeyMapping('asu', 'Open ASU', 'keyboard', Config.ASU.OpenKey)
 end
 
 -- Framework-specific events
