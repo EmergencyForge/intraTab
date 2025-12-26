@@ -28,7 +28,6 @@ files {
     'html/index.html',
     'html/css/style.css',
     'html/js/script.js',
-    'html/firetab.html',
     'html/css/firetab.css',
     'html/js/firetab.js',
     'html/js/master.js'
