@@ -144,7 +144,9 @@ function SyncDispatchData()
                     dispatch_issue = dispatchJson.dispatch_issue or "",
                     issue = dispatchJson.issue or "",
                     caller_phonenumber = dispatchJson.caller_phonenumber or "",
-                    caller_name = dispatchJson.caller_name or ""
+                    caller_name = dispatchJson.caller_name or "",
+                    location_x = dispatchJson.location_x or 0,
+                    location_y = dispatchJson.location_y or 0
                 }
             end
         end
