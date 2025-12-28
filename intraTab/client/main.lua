@@ -543,7 +543,7 @@ RegisterCommand('intrarptest', function()
 end, false)
 
 -- Key mapping
-RegisterKeyMapping(Config.eNOTF.Command, 'Open eNOTF Tablet', 'keyboard', Config.eNOTF.OpenKey or 'F9')
+RegisterKeyMapping(Config.eNOTF.Command, 'Open eNOTF Tablet', 'keyboard', Config.eNOTF.OpenKey)
 if Config.FireTab.OpenKey then
     RegisterKeyMapping(Config.FireTab.Command, 'Open FireTab', 'keyboard', Config.FireTab.OpenKey)
 end
