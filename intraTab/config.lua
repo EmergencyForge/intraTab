@@ -24,7 +24,7 @@ Config.Debug = false
 Config.eNOTF = {
     Enabled = true,
     Command = 'enotf',
-    OpenKey = 'F9',  -- Taste zum Öffnen (eNOTF-spezifisch)
+    OpenKey = 'F9',  -- Optional: Taste, oder nil für keine
     AllowedJobs = {
         'police',
         'ambulance',
@@ -53,7 +53,7 @@ Config.eNOTF = {
 Config.FireTab = {
     Enabled = true,
     Command = 'firetab',
-    OpenKey = nil,  -- Optional: Separate Taste, oder nil für keine
+    OpenKey = nil,  -- Optional: Taste, oder nil für keine
     AllowedJobs = {
         'firedepartment',
         'admin'
