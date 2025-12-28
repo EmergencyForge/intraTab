@@ -10,7 +10,7 @@ Config.Framework = 'auto' -- 'auto', 'qbcore', oder 'esx'
 -- Beispiele:
 --   https://deine-url.de/
 --   https://deine-url.de/intrarp/
-Config.BaseURL = 'https://deine-url.de/'  -- Mit trailing slash!
+Config.BaseURL = 'https://deine-url.de/'  -- WICHTIG: mit / am Ende
 
 -- Zentral definierter API-Key (für alle Systeme)
 Config.APIKey = 'CHANGE_ME'  -- Setze hier deinen API-Key
@@ -81,10 +81,10 @@ Config.FireTab = {
 Config.EMDSync = {
     Enabled = false,  -- Auf true setzen, um die EMD-Synchronisierung zu aktivieren
     SyncInterval = 30000,  -- Synchronisations-Intervall (Standard: 30000 = 30 Sekunden)
-    PHPEndpoint = Config.BaseURL .. 'api/emd-sync.php',  -- Wird automatisch aus BaseURL generiert
     APIKey = Config.APIKey,  -- Nutzt den zentralen API-Key
     
     -- Dispatch Log Sync Einstellungen (für Einsatz-Statusmeldungen)
+    --- Aktuell KEINE FUNKTION in intraRP - einfach auf false lassen!
     DispatchLogSync = {
         Enabled = false,  -- Auf true setzen, um die Dispatch-Log-Synchronisierung zu aktivieren
         CheckInterval = 60000,  -- Intervall zur Prüfung auf abgeschlossene Einsätze (Standard: 60000 = 60 Sekunden)

@@ -1,3 +1,68 @@
+-- ========================================
+-- URL HELPER FUNKTIONEN
+-- ========================================
+-- Stelle sicher, dass URLs HTTPS verwenden (FiveM-Anforderung)
+local function EnsureHttps(url)
+    if not url or url == "" then
+        return url
+    end
+    
+    -- Entferne führende/trailing Leerzeichen
+    url = url:match("^%s*(.-)%s*$")
+    
+    -- Wenn die URL mit http:// beginnt, ersetze es durch https://
+    if url:lower():sub(1, 7) == "http://" then
+        url = "https://" .. url:sub(8)
+        if Config.Debug then
+            print("^3[EMD-Sync]^7 URL converted to HTTPS: " .. url)
+        end
+    -- Wenn die URL nicht mit einem Protokoll beginnt, füge https:// hinzu
+    elseif url:lower():sub(1, 8) ~= "https://" and url:sub(1, 2) ~= "//" then
+        url = "https://" .. url
+        if Config.Debug then
+            print("^3[EMD-Sync]^7 HTTPS prefix added to URL: " .. url)
+        end
+    end
+    
+    return url
+end
+
+-- Entferne trailing slash
+local function RemoveTrailingSlash(url)
+    if url and url:sub(-1) == "/" then
+        return url:sub(1, -2)
+    end
+    return url
+end
+
+-- Stelle sicher, dass trailing slash vorhanden ist
+local function AddTrailingSlash(url)
+    if url and url:sub(-1) ~= "/" then
+        return url .. "/"
+    end
+    return url
+end
+
+-- Baue relative URLs basierend auf BaseURL
+local function BuildURL(basePath)
+    local baseURL = EnsureHttps(Config.BaseURL or "")
+    baseURL = AddTrailingSlash(baseURL)
+    
+    -- basePath sollte ohne führenden Slash sein
+    if basePath and basePath:sub(1, 1) == "/" then
+        basePath = basePath:sub(2)
+    end
+    
+    return baseURL .. (basePath or "")
+end
+
+-- Generiere PHPEndpoint einmalig beim Start
+local PHPEndpoint = BuildURL("api/emd-sync.php")
+
+if Config.Debug then
+    print("^2[EMD-Sync]^7 PHPEndpoint generiert: " .. (PHPEndpoint or "FEHLER"))
+end
+
 -- Funktion zum Ausführen von MySQL-Queries (nutzt vorhandene Framework-DB-Connection)
 local function ExecuteQuery(query, parameters)
     local promise = promise.new()
@@ -27,13 +92,20 @@ local function SendDataToPHP(data)
         return
     end
    
+    if not PHPEndpoint then
+        if Config.Debug then
+            print("^1[EMD-Sync]^7 Fehler: PHPEndpoint konnte nicht generiert werden!")
+        end
+        return
+    end
+    
     if Config.Debug then
         print("^2[EMD-Sync]^7 Daten an PHP-Endpunkt senden...")
         print("^2[EMD-Sync]^7 Verwendung des API-Schlüssels: " .. Config.EMDSync.APIKey)
-        print("^2[EMD-Sync]^7 Endpunkt: " .. Config.EMDSync.PHPEndpoint)
+        print("^2[EMD-Sync]^7 Endpunkt: " .. PHPEndpoint)
     end
     
-    PerformHttpRequest(Config.EMDSync.PHPEndpoint, function(statusCode, response, headers)
+    PerformHttpRequest(PHPEndpoint, function(statusCode, response, headers)
         if statusCode == 200 then
             if Config.Debug then
                 print("^2[EMD-Sync]^7 Daten erfolgreich gesendet! Antwort: " .. response)
@@ -233,7 +305,7 @@ CreateThread(function()
     
     if Config.Debug then
         print("^2[EMD-Sync]^7 Automatische Synchronisierung starten (Intervall: " .. (Config.EMDSync.SyncInterval / 1000) .. "s)")
-        print("^2[EMD-Sync]^7 PHP-Endpunkt: " .. Config.EMDSync.PHPEndpoint)
+        print("^2[EMD-Sync]^7 PHP-Endpunkt: " .. PHPEndpoint)
     end
     
     while true do
@@ -435,7 +507,7 @@ local function SendMissionDataToPHP(missions)
     
     if Config.Debug then
         print("^2[Dispatch-Log-Sync]^7 Sende " .. #missions .. " abgeschlossene Einsätze an PHP-Endpunkt...")
-        print("^2[Dispatch-Log-Sync]^7 Endpunkt: " .. Config.EMDSync.PHPEndpoint)
+        print("^2[Dispatch-Log-Sync]^7 Endpunkt: " .. PHPEndpoint)
     end
     
     -- Hole die Einsatznummern
@@ -491,7 +563,7 @@ local function SendMissionDataToPHP(missions)
         table.insert(payload.missions, missionData)
     end
     
-    PerformHttpRequest(Config.EMDSync.PHPEndpoint, function(statusCode, response, headers)
+    PerformHttpRequest(PHPEndpoint, function(statusCode, response, headers)
         if statusCode == 200 then
             if Config.Debug then
                 print("^2[Dispatch-Log-Sync]^7 Einsatzdaten erfolgreich gesendet! Antwort: " .. response)
@@ -583,7 +655,7 @@ CreateThread(function()
     if Config.Debug then
         print("^2[Dispatch-Log-Sync]^7 Automatische Dispatch-Log-Synchronisierung gestartet")
         print("^2[Dispatch-Log-Sync]^7 Prüfintervall: " .. (Config.EMDSync.DispatchLogSync.CheckInterval / 1000) .. "s")
-        print("^2[Dispatch-Log-Sync]^7 PHP-Endpunkt: " .. Config.EMDSync.PHPEndpoint)
+        print("^2[Dispatch-Log-Sync]^7 PHP-Endpunkt: " .. PHPEndpoint)
     end
     
     while true do
@@ -682,7 +754,7 @@ local function SendStatusesToPHP(statuses)
     
     if Config.Debug then
         print("^2[Status-Sync]^7 Sende " .. #statuses .. " Statusmeldungen an PHP-Endpunkt...")
-        print("^2[Status-Sync]^7 Endpunkt: " .. Config.EMDSync.PHPEndpoint)
+        print("^2[Status-Sync]^7 Endpunkt: " .. PHPEndpoint)
     end
     
     local payload = {
@@ -704,7 +776,7 @@ local function SendStatusesToPHP(statuses)
         })
     end
     
-    PerformHttpRequest(Config.EMDSync.PHPEndpoint, function(statusCode, response, headers)
+    PerformHttpRequest(PHPEndpoint, function(statusCode, response, headers)
         if statusCode == 200 then
             if Config.Debug then
                 print("^2[Status-Sync]^7 Statusmeldungen erfolgreich gesendet! Antwort: " .. response)
@@ -782,7 +854,7 @@ CreateThread(function()
         print("^2[Status-Sync]^7 Echtzeit-Status-Synchronisierung gestartet")
         print("^2[Status-Sync]^7 Überwachte Status: " .. table.concat(Config.EMDSync.StatusSync.SyncStatuses, ", "))
         print("^2[Status-Sync]^7 Polling-Intervall: " .. (Config.EMDSync.StatusSync.PollInterval / 1000) .. "s")
-        print("^2[Status-Sync]^7 PHP-Endpunkt: " .. Config.EMDSync.PHPEndpoint)
+        print("^2[Status-Sync]^7 PHP-Endpunkt: " .. PHPEndpoint)
     end
     
     while true do
