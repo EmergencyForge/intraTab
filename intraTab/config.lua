@@ -81,7 +81,7 @@ Config.FireTab = {
 Config.EMDSync = {
     Enabled = false,  -- Auf true setzen, um die EMD-Synchronisierung zu aktivieren
     SyncInterval = 30000,  -- Synchronisations-Intervall (Standard: 30000 = 30 Sekunden)
-    PHPEndpoint = Config.BaseURL .. 'api/emd-sync.php',  -- Wird automatisch aus BaseURL generiert
+    PHPEndpoint = Config.BaseURL .. '/api/emd-sync.php',  -- Wird automatisch aus BaseURL generiert
     APIKey = Config.APIKey,  -- Nutzt den zentralen API-Key
     
     -- Dispatch Log Sync Einstellungen (für Einsatz-Statusmeldungen)
