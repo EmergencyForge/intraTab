@@ -10,7 +10,9 @@
 --     name = "Max Mustermann",
 --     birthdate = "1990-01-15",  -- Format: YYYY-MM-DD
 --     transport = true,           -- Boolean: true wenn Transport durchgeführt wurde
---     missionNumber = "ENR_123"   -- Einsatznummer (kann auch ENR_X Format sein)
+--     missionNumber = "ENR_123",  -- Einsatznummer (kann auch ENR_X Format sein)
+--     protocolType = 1,           -- Numerisch: Art des Protokolls (0 = Notarzt, 1 = Rettungsdienst, etc.)
+--     vehicleCallsign = "RTW 1-82-1" -- String: Rufname des Fahrzeugs
 --   },
 --   ...
 -- }
@@ -322,12 +324,14 @@ RegisterCommand('enotf-billing-sync', function(source, args, rawCommand)
         print("^2[eNOTF-Billing]^7 " .. #protocols .. " Protokolle abgerufen:")
         
         for i, protocol in ipairs(protocols) do
-            print(string.format("  [%d] %s | Geburtsdatum: %s | Transport: %s | Einsatz: %s",
+            print(string.format("  [%d] %s | Geburtsdatum: %s | Transport: %s | Einsatz: %s | Protokollart: %s | Fahrzeug: %s",
                 i,
                 protocol.name,
                 protocol.birthdate,
                 protocol.transport and "Ja" or "Nein",
-                protocol.missionNumber
+                protocol.missionNumber,
+                protocol.protocolType or "N/A",
+                protocol.vehicleCallsign or "N/A"
             ))
         end
         

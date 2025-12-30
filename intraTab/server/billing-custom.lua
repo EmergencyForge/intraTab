@@ -6,7 +6,7 @@
 RegisterNetEvent('enotf-billing:autoSync')
 AddEventHandler('enotf-billing:autoSync', function(protocols)
     -- protocols = {
-    --     {name = "Max Mustermann", birthdate = "1990-05-15", transport = true, missionNumber = "ENR_001"},
+    --     {name = "Max Mustermann", birthdate = "1990-05-15", transport = true, missionNumber = "ENR_001", protocolType = 1, vehicleCallsign = "RTW 1-82-1"},
     --     ...
     -- }
     
