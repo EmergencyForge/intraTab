@@ -17,7 +17,9 @@ client_scripts {
 
 server_scripts {
     'server/main.lua',
-    'server/emd_sync.lua'
+    'server/emd_sync.lua',
+    'server/enotf_billing.lua',
+    'server/billing-custom.lua'
 }
 
 -- Master UI Page (contains eNOTF and FireTab)

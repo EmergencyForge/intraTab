@@ -100,6 +100,22 @@ Config.EMDSync = {
 }
 
 -- ========================================
+-- eNOTF ABRECHNUNGSSYSTEM EINSTELLUNGEN
+-- ========================================
+Config.ENOTFBilling = {
+    Enabled = false,  -- Auf true setzen, um das eNOTF-Abrechnungssystem zu aktivieren
+    APIKey = Config.APIKey,  -- Nutzt den zentralen API-Key
+    
+    -- Automatische Synchronisierung
+    AutoSync = false,  -- Automatisch im Hintergrund synchronisieren
+    SyncInterval = 900000,  -- Synchronisations-Intervall in Millisekunden (Standard: 900000 = 15 Minuten)
+    
+    -- Filter für bereits verarbeitete Protokolle
+    FilterProcessed = true,  -- Schließt bereits in FiveM-DB gespeicherte Protokolle aus (erfordert enotf_billing Tabelle)
+    -- WICHTIG: Name + 123, Name + 123_1, Name + 123_2 = nur 1x abgerechnet (Basis-Nummer vor "_" ist entscheidend)
+}
+
+-- ========================================
 -- TABLET ANIMATION EINSTELLUNGEN
 -- ========================================
 Config.Animation = {
