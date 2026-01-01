@@ -62,15 +62,15 @@ Config.FireTab = {
     RequiredItem = "tablet",
     UseProp = true,
     Prop = {
-        model = "prop_cs_tablet",
-        bone = 60309,
+        model = "firetab",
+        bone = 18905,
         offset = {
-            x = 0.03,
-            y = 0.002,
-            z = -0.0,
-            xRot = 10.0,
-            yRot = 160.0,
-            zRot = 0.0
+            x = 0.1240,
+            y = 0.0450,
+            z = 0.1550,
+            xRot = 18.0,
+            yRot = -186.0,
+            zRot = 58.3
         }
     }
 }
@@ -105,7 +105,7 @@ Config.EMDSync = {
 Config.Animation = {
     dict = "amb@world_human_seat_wall_tablet@female@base",
     anim = "base",
-    flag = 50  -- Geändert von 49 zu 50 für besseres Stoppen (50 = Loop mit Möglichkeit zum Stoppen)
+    flag = 50
 }
 
 
