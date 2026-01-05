@@ -205,12 +205,12 @@ function SyncDispatchData()
         -- Hole Dispatch-Details aus emd_dispatchlist
         local dispatchDetails = GetDispatchListDetails(dispatchNumbers)
         
-        -- Erstelle Map für schnellen Zugriff
+        -- Erstelle Map für schnellen Zugriff auf Dispatch-Details
         local dispatchMap = {}
         for _, detail in ipairs(dispatchDetails) do
             local dispatchJson = json.decode(detail.dispatch)
             if dispatchJson then
-                dispatchMap[tostring(detail.number)] = {
+                local dispatchData = {
                     postal = dispatchJson.postal or "",
                     dispatch_code = dispatchJson.dispatch_code or "",
                     dispatch_issue = dispatchJson.dispatch_issue or "",
@@ -220,16 +220,45 @@ function SyncDispatchData()
                     location_x = dispatchJson.location_x or 0,
                     location_y = dispatchJson.location_y or 0
                 }
+                
+                -- Füge Patientendaten hinzu, falls vorhanden
+                if dispatchJson.patienten and dispatchJson.patienten ~= "" then
+                    -- patienten ist ein JSON-String, der dekodiert werden muss
+                    local patientenDecoded = json.decode(dispatchJson.patienten)
+                    if patientenDecoded then
+                        -- Filtere nur die benötigten Felder: alter, vorname, nachname
+                        local filteredPatienten = {}
+                        for _, patient in ipairs(patientenDecoded) do
+                            table.insert(filteredPatienten, {
+                                alter = patient.alter or "",
+                                vorname = patient.vorname or "",
+                                nachname = patient.nachname or ""
+                            })
+                        end
+                        dispatchData.patienten = filteredPatienten
+                    end
+                end
+                
+                dispatchMap[tostring(detail.number)] = dispatchData
             end
         end
         
-        -- Füge Dispatch-Details zu jedem Fahrzeug hinzu
+        -- Füge Dispatch-Details (inkl. Patientendaten) zu jedem Fahrzeug hinzu
         for _, vehicle in ipairs(dispatchData) do
-            if vehicle.dispatch and dispatchMap[tostring(vehicle.dispatch)] then
-                vehicle.dispatch_data = dispatchMap[tostring(vehicle.dispatch)]
+            if vehicle.dispatch then
+                local dispatchNumber = tostring(vehicle.dispatch)
                 
-                if Config.Debug then
-                    print("^2[EMD-Sync]^7 Dispatch-Daten für Einsatz " .. vehicle.dispatch .. " hinzugefügt")
+                -- Füge Dispatch-Daten hinzu
+                if dispatchMap[dispatchNumber] then
+                    vehicle.dispatch_data = dispatchMap[dispatchNumber]
+                    
+                    if Config.Debug then
+                        local patientInfo = ""
+                        if dispatchMap[dispatchNumber].patienten then
+                            patientInfo = " (inkl. " .. #dispatchMap[dispatchNumber].patienten .. " Patient(en))"
+                        end
+                        print("^2[EMD-Sync]^7 Dispatch-Daten für Einsatz " .. vehicle.dispatch .. " hinzugefügt" .. patientInfo)
+                    end
                 end
             end
         end
