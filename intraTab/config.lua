@@ -24,7 +24,7 @@ Config.Debug = false
 Config.eNOTF = {
     Enabled = true,
     Command = 'enotf',
-    OpenKey = 'F9',  -- Optional: Taste, oder nil für keine
+    OpenKey = 'F9',  -- Standardtaste (oder nil = keine Vorgabe, Spieler kann selbst zuweisen)
     AllowedJobs = {
         'police',
         'ambulance',
@@ -53,7 +53,7 @@ Config.eNOTF = {
 Config.FireTab = {
     Enabled = true,
     Command = 'firetab',
-    OpenKey = nil,  -- Optional: Taste, oder nil für keine
+    OpenKey = nil,  -- Standardtaste (oder nil = keine Vorgabe, Spieler kann selbst zuweisen)
     AllowedJobs = {
         'firedepartment',
         'admin'

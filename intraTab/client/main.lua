@@ -93,22 +93,6 @@ local tabletProp = nil
 local tabletDict = Config.Animation.dict
 local tabletAnim = Config.Animation.anim
 
--- Hilfsfunktion für OpenKey pro Tablet
-local function GetOpenKeyForTablet(tabletType)
-    local config = Config[tabletType]
-    if not config then return nil end
-    
-    -- Verwende Tablet-spezifischen OpenKey
-    return config.OpenKey
-end
-
--- Hilfsfunktion für Key-Control ID
-local function GetKeyControlForTablet(tabletType)
-    local keyName = GetOpenKeyForTablet(tabletType)
-    if not keyName then return nil end
-    return Config.KeyControls[keyName] or 168
-end
-
 -- Framework-specific notification function
 local function ShowNotification(message, type)
     if FrameworkName == 'qbcore' then
@@ -488,27 +472,6 @@ CreateThread(function()
             if IsEntityPlayingAnim(ped, tabletDict, tabletAnim, 3) then
                 StopAnimTask(ped, tabletDict, tabletAnim, 1.0)
             end
-            -- Check eNOTF key
-            if Config.eNOTF.Enabled and Config.eNOTF.OpenKey then
-                local enotfKeyControl = GetKeyControlForTablet('eNOTF')
-                if enotfKeyControl and IsControlJustPressed(0, enotfKeyControl) then
-                    if Config.Debug then
-                        print(Config.eNOTF.OpenKey .. " pressed, opening eNOTF")
-                    end
-                    OpenTablet('eNOTF')
-                end
-            end
-            
-            -- Check FireTab key
-            if Config.FireTab.Enabled and Config.FireTab.OpenKey then
-                local firetabKeyControl = GetKeyControlForTablet('FireTab')
-                if firetabKeyControl and IsControlJustPressed(0, firetabKeyControl) then
-                    if Config.Debug then
-                        print(Config.FireTab.OpenKey .. " pressed, opening FireTab")
-                    end
-                    OpenTablet('FireTab')
-                end
-            end
         end
         
         Wait(0)
@@ -542,10 +505,17 @@ RegisterCommand('intrarptest', function()
     end
 end, false)
 
--- Key mapping
-RegisterKeyMapping(Config.eNOTF.Command, 'Open eNOTF Tablet', 'keyboard', Config.eNOTF.OpenKey)
-if Config.FireTab.OpenKey then
-    RegisterKeyMapping(Config.FireTab.Command, 'Open FireTab', 'keyboard', Config.FireTab.OpenKey)
+-- Key Mappings - Benutzer können die Tasten in FiveM Einstellungen > Tastenbelegung > FiveM ändern
+-- Hinweis: Diese Tasten sind nur Standardwerte und können von jedem Spieler individuell angepasst werden
+-- Wenn OpenKey = nil, erscheint die Option trotzdem in den Einstellungen, aber ohne vorgegebene Taste
+if Config.eNOTF.Enabled then
+    local defaultKey = Config.eNOTF.OpenKey or ''  -- Leerer String = keine Vorgabe, aber User kann selbst zuweisen
+    RegisterKeyMapping(Config.eNOTF.Command, 'eNOTF Tablet öffnen/schließen', 'keyboard', defaultKey)
+end
+
+if Config.FireTab.Enabled then
+    local defaultKey = Config.FireTab.OpenKey or ''  -- Leerer String = keine Vorgabe, aber User kann selbst zuweisen
+    RegisterKeyMapping(Config.FireTab.Command, 'FireTab Tablet öffnen/schließen', 'keyboard', defaultKey)
 end
 
 -- Framework-specific events
